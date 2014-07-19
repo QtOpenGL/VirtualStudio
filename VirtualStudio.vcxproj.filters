@@ -1,0 +1,719 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{06846d73-dda6-490c-9176-e6c457aad126}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{f2702ff5-c53a-458f-80b8-91f1564a46d3}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Resource Files\shaders">
+      <UniqueIdentifier>{7ef473b9-2aed-4bb0-bc12-00f36deb7d21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\images">
+      <UniqueIdentifier>{4c17326e-9cab-4d7c-b671-9f93ceca421d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClothMotion">
+      <UniqueIdentifier>{f15772ed-dd3e-4ded-973f-daa29c3d4ea6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClothMotion\alglib">
+      <UniqueIdentifier>{fe720291-5b4c-48fc-8ddb-72f1bb4dee6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClothMotion\simulation">
+      <UniqueIdentifier>{bd2e2f7f-6a1e-4cdb-94be-46be08ef68af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dxf">
+      <UniqueIdentifier>{daa0606a-a686-4260-9814-f4cb2c6eff46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dxf\ClothData">
+      <UniqueIdentifier>{b20459c1-7aeb-4fbe-a94a-770f49e5d2ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dxf\dxflib">
+      <UniqueIdentifier>{bd0e9520-68a0-4c46-843b-c05dde55ef6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dxf\dxfele">
+      <UniqueIdentifier>{7d469117-1f96-4d46-8a1e-7cb1d54214dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dxf\global">
+      <UniqueIdentifier>{47921251-c9f2-4ef6-8d1e-114bf5112db7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="abstractscene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="animation_editor_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cad2d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cloth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="object_browser_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="opengl_window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="panel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sampler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="simulation_window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_animation.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_animation.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_animation_editor_widget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_animation_editor_widget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_mainwindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_mainwindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_opengl_window.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_opengl_window.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_pattern.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_pattern.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_simulation_window.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_simulation_window.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_virtualstudio.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\cloth_motion.cpp">
+      <Filter>ClothMotion</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\timer.cpp">
+      <Filter>ClothMotion</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\auglag.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\bah.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\bvh.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\collision.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\collisionutil.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\constraint.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\dynamicremesh.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\geometry.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\handle.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\io.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\lsnewton.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\magic.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\mesh.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\morph.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\nearobs.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\obstacle.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\physics.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\plasticity.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\popfilter.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\proximity.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\remesh.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\separate.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\separateobs.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\simulation.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\spline.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\strainlimiting.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\taucs_util.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\tensormax.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\transformation.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\util.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\vectors.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\alglib\alglibinternal.cpp">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\alglib\alglibmisc.cpp">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\alglib\ap.cpp">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\alglib\dataanalysis.cpp">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\alglib\diffequations.cpp">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\alglib\fasttransforms.cpp">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\alglib\integration.cpp">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\alglib\interpolation.cpp">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\alglib\linalg.cpp">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\alglib\optimization.cpp">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\alglib\solvers.cpp">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\alglib\specialfunctions.cpp">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\alglib\statistics.cpp">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothMotion\simulation\cmcloth.cpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="preWork\clothData\ClothLine.cpp">
+      <Filter>Dxf\ClothData</Filter>
+    </ClCompile>
+    <ClCompile Include="preWork\clothData\ClothLoop.cpp">
+      <Filter>Dxf\ClothData</Filter>
+    </ClCompile>
+    <ClCompile Include="preWork\clothData\ClothPiece.cpp">
+      <Filter>Dxf\ClothData</Filter>
+    </ClCompile>
+    <ClCompile Include="preWork\clothData\ClothPolyline.cpp">
+      <Filter>Dxf\ClothData</Filter>
+    </ClCompile>
+    <ClCompile Include="preWork\clothData\ClothStraightLine.cpp">
+      <Filter>Dxf\ClothData</Filter>
+    </ClCompile>
+    <ClCompile Include="preWork\dxf\dl_dxf.cpp">
+      <Filter>Dxf\dxflib</Filter>
+    </ClCompile>
+    <ClCompile Include="preWork\dxf\dl_writer_ascii.cpp">
+      <Filter>Dxf\dxflib</Filter>
+    </ClCompile>
+    <ClCompile Include="preWork\dxfele\MyDxfFilter.cpp">
+      <Filter>Dxf\dxfele</Filter>
+    </ClCompile>
+    <ClCompile Include="preWork\global\Global.cpp">
+      <Filter>Dxf\global</Filter>
+    </ClCompile>
+    <ClCompile Include="AVIGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wunf_camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="abstractscene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="animation.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="animation_editor_widget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="cad2d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cloth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="mainwindow.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="object_browser_widget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="opengl_window.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="panel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="pattern.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="sampler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="simulation_window.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\cloth_motion.h">
+      <Filter>ClothMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\timer.h">
+      <Filter>ClothMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\auglag.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\bah.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\blockvectors.hpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\bvh.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\collision.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\collisionutil.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\constraint.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\dynamicremesh.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\geometry.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\handle.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\io.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\magic.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\mesh.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\morph.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\nearobs.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\obstacle.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\optimization.hpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\physics.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\plasticity.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\popfilter.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\proximity.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\remesh.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\separate.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\separateobs.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\simulation.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\sparse.hpp">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\spline.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\strainlimiting.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\taucs_util.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\tensormax.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\transformation.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\util.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\vectors.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\alglibinternal.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\alglibmisc.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\ap.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\dataanalysis.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\diffequations.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\fasttransforms.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\integration.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\interpolation.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\linalg.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\optimization.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\solvers.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\specialfunctions.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\statistics.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\alglib\stdafx.h">
+      <Filter>ClothMotion\alglib</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothMotion\simulation\cmcloth.h">
+      <Filter>ClothMotion\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\clothData\ClothLine.h">
+      <Filter>Dxf\ClothData</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\clothData\ClothLoop.h">
+      <Filter>Dxf\ClothData</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\clothData\ClothPiece.h">
+      <Filter>Dxf\ClothData</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\clothData\ClothPolyline.h">
+      <Filter>Dxf\ClothData</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\clothData\ClothStraightLine.h">
+      <Filter>Dxf\ClothData</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\dxf\dl_attributes.h">
+      <Filter>Dxf\dxflib</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\dxf\dl_codes.h">
+      <Filter>Dxf\dxflib</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\dxf\dl_creationadapter.h">
+      <Filter>Dxf\dxflib</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\dxf\dl_creationinterface.h">
+      <Filter>Dxf\dxflib</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\dxf\dl_dxf.h">
+      <Filter>Dxf\dxflib</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\dxf\dl_entities.h">
+      <Filter>Dxf\dxflib</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\dxf\dl_exception.h">
+      <Filter>Dxf\dxflib</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\dxf\dl_extrusion.h">
+      <Filter>Dxf\dxflib</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\dxf\dl_writer.h">
+      <Filter>Dxf\dxflib</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\dxf\dl_writer_ascii.h">
+      <Filter>Dxf\dxflib</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\dxfele\DXFClothData.h">
+      <Filter>Dxf\dxfele</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\dxfele\MyDxfFilter.h">
+      <Filter>Dxf\dxfele</Filter>
+    </ClInclude>
+    <ClInclude Include="preWork\global\Global.h">
+      <Filter>Dxf\global</Filter>
+    </ClInclude>
+    <ClInclude Include="AVIGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wunf_camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="virtualstudio.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <None Include="shaders\phong.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="shaders\phong.vert">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\add.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\arrow_down.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\arrow_up.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\bindpose.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\camera.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\clothes.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\control_end_blue.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\control_fastforward_blue.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\control_pause_blue.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\control_play_blue.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\control_repeat_blue.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\control_rewind_blue.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\control_start_blue.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\cross.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\exit.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\import_avatar.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\import_pattern.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\open.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\pan.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\rotate.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\save.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\select.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\shading.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\shading_wireframe.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\showgrid.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\wireframe.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\wood.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="images\zoom.png">
+      <Filter>Resource Files\images</Filter>
+    </None>
+    <None Include="shaders\lbs.vert">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="ClothMotion\alglib\vssver2.scc">
+      <Filter>ClothMotion\alglib</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\record.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

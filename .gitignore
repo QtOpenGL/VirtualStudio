@@ -1,0 +1,8 @@
+*.sdf
+*.obj
+*.exe
+GeneratedFiles/
+Debug/
+x64/
+^moc*.cpp$
+*.tlog
