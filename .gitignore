@@ -9,3 +9,5 @@ x64/
 *.tlog
 *~
 *.opensdf
+*.suo
+*.vcxproj*
