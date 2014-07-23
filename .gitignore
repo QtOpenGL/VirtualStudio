@@ -6,3 +6,5 @@ Debug/
 x64/
 ^moc*.cpp$
 *.tlog
+*.swp
+VirtualStudio.opensdf
