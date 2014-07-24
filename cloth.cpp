@@ -1,4 +1,5 @@
 #include "cloth.h"
+#include "ClothMotion\simulation\cmcloth.h"
 
 
 zfCloth::zfCloth(void) : cloth_(NULL)
@@ -15,9 +16,9 @@ zfCloth::~zfCloth(void)
 
 void zfCloth::init_buffer()
 {
-	if(!cloth_handler.cloth_num())
+	if(!cloth_)
 		return;
-	cloth_handler.update_buffer();
+	/*cloth_handler.update_buffer();
 	std::vector<float> positions = cloth_handler.get_position();
 	std::vector<float> normals = cloth_handler.get_normal();
 	std::vector<float> texcoords = cloth_handler.get_texcoord();
@@ -41,12 +42,12 @@ void zfCloth::init_buffer()
 	texcoord_buffer_->setUsagePattern(QOpenGLBuffer::StaticDraw);
 	texcoord_buffer_->bind();
 	texcoord_buffer_->allocate(&texcoords[0], static_cast<int>(texcoords.size() * sizeof(float)));
-	texcoord_buffer_->release();
+	texcoord_buffer_->release();*/
 }
 
 void zfCloth::update_buffer()
 {
-	if(!cloth_handler.cloth_num())
+	/*if(!cloth_handler.cloth_num())
 		return;
 	cloth_handler.update_buffer();
 	std::vector<float> positions = cloth_handler.get_position();
@@ -63,47 +64,52 @@ void zfCloth::update_buffer()
 
 	texcoord_buffer_->bind();
 	texcoord_buffer_->allocate(&texcoords[0], static_cast<int>(texcoords.size() * sizeof(float)));
-	texcoord_buffer_->release();
+	texcoord_buffer_->release();*/
 }
 
 void zfCloth::initOBS(double * position, double * texcoords, int * indices, size_t faceNum) 
 {
-	cloth_handler.init_avatars_to_handler(position, texcoords, indices, faceNum);
+	//cloth_handler.init_avatars_to_handler(position, texcoords, indices, faceNum);
 }
 
 void zfCloth::updateOBS(double * position)
 {
-	cloth_handler.update_avatars_to_handler(position);
+	//cloth_handler.update_avatars_to_handler(position);
 }
 
 void zfCloth::startSimulate()
 {
-	cloth_handler.begin_simulate();
+	//cloth_handler.begin_simulate();
 }
 
 void zfCloth::simulateStep()
 {
-	cloth_handler.sim_next_step();
+	//cloth_handler.sim_next_step();
 }
 
 void zfCloth::initCmFile(const char * filename, int totalFrame)
 {
-	cloth_handler.init_cmfile(filename, totalFrame);
+	//cloth_handler.init_cmfile(filename, totalFrame);
 }
 
 void zfCloth::writeToCmFile(int frame)
 {
-	cloth_handler.write_frame_to_cmfile(frame);
+	//cloth_handler.write_frame_to_cmfile(frame);
 }
 
 void zfCloth::saveCmFile()
 {
-	cloth_handler.save_cmfile();
+	//cloth_handler.save_cmfile();
 }
 
 void zfCloth::loadCmFile(const char * filename)
 {
-	cloth_handler.load_cmfile_to_replay(filename);
-	cloth_handler.load_frame(1);
-	init_buffer();
+	//cloth_handler.load_cmfile_to_replay(filename);
+	//cloth_handler.load_frame(1);
+	//init_buffer();
+}
+
+size_t zfCloth::face_count() 
+{ 
+	return cloth_->mesh.faces.size(); 
 }

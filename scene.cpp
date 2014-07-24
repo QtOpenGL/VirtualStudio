@@ -15,6 +15,7 @@
 #include "camera.h"
 #include "light.h"
 #include "animation_editor_widget.h"
+#include "ClothMotion\cloth_motion.h"
 
 /************************************************************************/
 /* ·ÂÕæ³¡¾°                                                              */
@@ -33,7 +34,7 @@ Scene::Scene( QObject* parent )
 	  replay_(false),
 	  color_(1.0f, 1.0f, 1.0f, 1.0f),
 	  cloth_has_texture_(false),
-	  cloth_handler_(new ClothHandler)
+	  cloth_handler_(new ClothHandler())
 {
 	model_matrix_.setToIdentity();
 

@@ -5,6 +5,7 @@
 #include <QPrinter>
 #include <QSplitter>
 #include <QWindow>
+#include <fstream>
 
 // simulation
 #include "scene.h"

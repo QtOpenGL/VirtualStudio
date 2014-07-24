@@ -1,10 +1,11 @@
 #include <memory>
 #include <vector>
 #include <fstream>
+#include "simulation\cmcloth.h"
 
 struct Simulation;
-struct Cloth;
 struct Mesh;
+struct Cloth;
 struct Timer;
 struct Velocity;
 
