@@ -110,10 +110,11 @@ class zfCloth
 {
 public:
 	zfCloth(void);
+	zfCloth(SmtClothPtr cloth);
 	~zfCloth(void);
 
 	void updateAnimation();
-	void load(const char * filename) {cloth_handler.add_clothes_to_handler(filename);}
+	void load_zfcloth(const char * filename) {cloth_handler.add_clothes_to_handler(filename);}
 	QOpenGLBuffer* position_buffer() { return position_buffer_; }
 	QOpenGLBuffer* normal_buffer() { return normal_buffer_; }
 	QOpenGLBuffer* texcoord_buffer() { return texcoord_buffer_; }
@@ -130,11 +131,13 @@ public:
 	void saveCmFile();
 	void loadFrame(int frame) {cloth_handler.load_frame(frame);update_buffer();}
 	void loadCmFile(const char * filename);
+
 private:
 	void init_buffer();
 	void update_buffer();
 
 	// 网格
+	const SmtClothPtr cloth_;
 
 	// wunf的服装动画处理对象
 	ClothHandler cloth_handler;

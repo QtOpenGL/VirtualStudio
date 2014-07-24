@@ -32,7 +32,8 @@ Scene::Scene( QObject* parent )
 	  cloth_loaded(false),
 	  replay_(false),
 	  color_(1.0f, 1.0f, 1.0f, 1.0f),
-	  cloth_has_texture_(false)
+	  cloth_has_texture_(false),
+	  cloth_handler_(new ClothHandler)
 {
 	model_matrix_.setToIdentity();
 
@@ -60,6 +61,7 @@ Scene::~Scene()
 		delete clothes_[i];
 
 	delete synthetic_animation_;
+	delete cloth_handler_;
 
 	aiReleaseImport(ai_scene_);
 }
@@ -179,9 +181,11 @@ void Scene::importAvatar( const QString& filename )
 // wunf
 void Scene::importCloth(const QString& filename)
 {
-	zfCloth * cloth = new zfCloth();
-	cloth->load(filename.toStdString().c_str());
-	clothes_.push_back(cloth);
+	SmtClothPtr cloth = ClothHandler::load_cloth_from_obj(filename.toStdString().c_str());
+	zfCloth * zfcloth = new zfCloth(cloth);
+	cloth_handler_->add_clothes_to_handler(cloth);
+	//cloth->load_zfcloth(filename.toStdString().c_str());
+	clothes_.push_back(zfcloth);
 	prepareClothVAO();
 	//prepareClothTex();
 	cloth_loaded = true;

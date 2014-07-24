@@ -139,6 +139,7 @@ private:
 	QVector<Light*>	lights_;	// 灯光
 	Avatar*			avatar_;	// 模特
 	QVector<zfCloth*>	clothes_;	// 布料
+	ClothHandler*	cloth_handler_;
 
 	MaterialPtr	material_;
 	// The floor "object"

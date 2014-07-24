@@ -1,10 +1,13 @@
 #include "cloth.h"
 
 
-zfCloth::zfCloth(void)
+zfCloth::zfCloth(void) : cloth_(NULL)
 {
 }
 
+zfCloth::zfCloth(SmtClothPtr cloth) : cloth_(cloth)
+{
+}
 
 zfCloth::~zfCloth(void)
 {

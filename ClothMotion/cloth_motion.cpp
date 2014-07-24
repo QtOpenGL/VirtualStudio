@@ -92,7 +92,7 @@ void ClothHandler::update_avatars_to_handler(DoubleDataBuffer position)
 // used to import obj cloth file
 void ClothHandler::add_clothes_to_handler(const char * filename)
 {
-	std::tr1::shared_ptr<Cloth> cloth(new Cloth);
+	SmtClothPtr cloth(new Cloth);
 	load_obj(cloth->mesh, filename);
 
 	std::fstream fs("patameters/parameter.txt");
@@ -194,14 +194,14 @@ void ClothHandler::add_clothes_to_handler(const char * filename)
 
 	fs.close();
 	// save to simulation
-	sim_->cloths.push_back(*cloth);
+	sim_->cloths.push_back(cloth);
 }
 
 void ClothHandler::transform_cloth(const float * transform)
 {
 	if(sim_->cloths.empty())
 		return;
-	Cloth & cloth = sim_->cloths[0];
+	SmtClothPtr & cloth = sim_->cloths[0];
 
 	Transformation trans;
 	trans.translation = Vec3(transform[0], transform[1], transform[2]);// edit
@@ -209,11 +209,11 @@ void ClothHandler::transform_cloth(const float * transform)
 	trans.rotation.v = Vec3(transform[4], transform[5], transform[6]);
 	trans.rotation.s = transform[7];
 	if (abs(trans.scale - 1.0f) > 0.0001f)
-		for (int v = 0; v < cloth.mesh.verts.size(); v++)
-			cloth.mesh.verts[v]->u *= trans.scale;
+		for (int v = 0; v < cloth->mesh.verts.size(); v++)
+			cloth->mesh.verts[v]->u *= trans.scale;
 
-	apply_transformation(cloth.mesh, trans);
-	compute_ms_data(cloth.mesh);
+	apply_transformation(cloth->mesh, trans);
+	compute_ms_data(cloth->mesh);
 }
 
 void ClothHandler::update_buffer()
@@ -221,7 +221,7 @@ void ClothHandler::update_buffer()
 	position_buffer_.clear();
 	normal_buffer_.clear();
 	texcoord_buffer_.clear();
-	Mesh & mesh = sim_->cloths[0].mesh;
+	Mesh & mesh = sim_->cloths[0]->mesh;
 	for(auto face_it = mesh.faces.begin(); face_it != mesh.faces.end(); ++face_it)
 	{
 		Face * face = *face_it;
@@ -284,9 +284,9 @@ void ClothHandler::init_simulation()
 	bool has_strain_limits = false, has_plasticity = false;
 	for (int c = 0; c < sim_->cloths.size(); c++)
 	{
-		for (int m = 0; m < sim_->cloths[c].materials.size(); m++) 
+		for (int m = 0; m < sim_->cloths[c]->materials.size(); m++) 
 		{
-			std::tr1::shared_ptr<Cloth::Material> mat = sim_->cloths[c].materials[m];
+			std::tr1::shared_ptr<Cloth::Material> mat = sim_->cloths[c]->materials[m];
 			if (mat->strain_min != infinity || mat->strain_max != infinity)
 				has_strain_limits = true;
 			if (mat->yield_curv != infinity)
@@ -357,7 +357,7 @@ bool ClothHandler::load_cmfile_to_replay(const char * fileName)
 			return false;
 		for(int cloth_index = 0; cloth_index < cloth; ++cloth_index)
 		{
-			std::tr1::shared_ptr<Cloth> cloth(new Cloth);
+			SmtClothPtr cloth(new Cloth);
 			Mesh & mesh = cloth->mesh;
 			int vertexNum = 0;
 			ifs >> tag >> vertexNum;
@@ -420,8 +420,8 @@ void ClothHandler::write_frame_to_cmfile(int frame)
 			}
 		}	
 	}*/
-	std::tr1::shared_ptr<Cloth> copy_cloth(new Cloth);
-	copy_cloth->mesh = deep_copy(clothes_[0].mesh);
+	SmtClothPtr copy_cloth(new Cloth);
+	copy_cloth->mesh = deep_copy(clothes_[0]->mesh);
 	clothes_frame_.push_back(copy_cloth);
 }
 
@@ -441,7 +441,7 @@ void ClothHandler::apply_velocity(Mesh &mesh, const Velocity &vel)
 		mesh.nodes[n]->v = vel.v + cross(vel.w, mesh.nodes[n]->x - vel.o);
 }
 
-size_t ClothHandler::face_count() { return sim_->cloths[0].mesh.faces.size(); }
+size_t ClothHandler::face_count() { return sim_->cloths[0]->mesh.faces.size(); }
 
 size_t ClothHandler::cloth_num() { return sim_->cloths.size(); }
 
@@ -449,5 +449,112 @@ void ClothHandler::load_frame(int frame)
 {
 	if(frame > static_cast<int>(clothes_frame_.size()) - 1)
 		frame = static_cast<int>(clothes_frame_.size()) - 1;
-	sim_->cloths[0] = *clothes_frame_[frame];
+	sim_->cloths[0] = clothes_frame_[frame];
+}
+
+SmtClothPtr ClothHandler::load_cloth_from_obj(const char * filename)
+{
+	SmtClothPtr cloth(new Cloth);
+	load_obj(cloth->mesh, filename);
+
+	std::fstream fs("patameters/parameter.txt");
+	assert(fs.is_open());
+
+	std::string tab;
+	double v1, v2, v3, v4;
+
+	// init transformation
+	Transformation transform;
+	fs >> tab >> v1 >> v2 >> v3;
+	transform.translation = Vec3(v1, v2, v3);
+	fs >> tab >> v1;
+	transform.scale = v1;
+	Vec<4> rot(0); 
+	fs >> tab >> v1 >> v2 >> v3 >> v4;
+	rot = Vec<4>(v1, v2, v3, v4); 
+	transform.rotation = Quaternion::from_axisangle(Vec3(rot[1], rot[2], rot[3]), rot[0]*M_PI/180);
+	if (transform.scale != 1.0f)
+		for (int v = 0; v < cloth->mesh.verts.size(); v++)
+			cloth->mesh.verts[v]->u *= transform.scale;
+	compute_ms_data(cloth->mesh);
+	apply_transformation(cloth->mesh, transform);
+
+	// init velocity
+	Velocity velocity;
+	apply_velocity(cloth->mesh, velocity);
+
+	// init material
+	std::string mat_file;
+	std::tr1::shared_ptr<Cloth::Material> material(new Cloth::Material);
+	fs >> tab >> mat_file;
+	mat_file = "material/" + mat_file + ".txt";
+	std::fstream matfs(mat_file);
+	assert(matfs.is_open());
+
+	matfs >> tab >> material->density;
+
+	// init stretching data
+	StretchingData data;
+	matfs >> tab;
+	matfs >> tab >> v1 >> v2 >> v3 >> v4;
+	data.d[0][0] = Vec4(v1, v2, v3, v4);
+	for (int i = 1; i < 5; i++)
+		data.d[0][i] = data.d[0][0];
+	for (int i = 0; i < 5; i++)
+	{
+		matfs >> tab >> v1 >> v2 >> v3 >> v4;
+		data.d[1][i] = Vec4(v1, v2, v3, v4);
+	}
+	evaluate_stretching_samples(material->stretching, data);
+
+	// init bending data
+	matfs >> tab;
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			matfs >> material->bending.d[i][j];
+		}
+	}
+
+	matfs.close();
+
+	// init mult factor
+	double density_mult, stretching_mult, bending_mult, thicken;
+	fs >> tab >> v1;
+	density_mult = v1;
+	fs >> tab >> v1;
+	stretching_mult = v1;
+	fs >> tab >> v1;
+	bending_mult = v1;
+	fs >> tab >> v1;
+	thicken = v1;
+	density_mult *= thicken;
+	stretching_mult *= thicken;
+	bending_mult *= thicken;
+	material->density *= density_mult;
+	for (int i = 0; i < sizeof(material->stretching.s)/sizeof(Vec4); i++)
+		((Vec4*)&material->stretching.s)[i] *= stretching_mult;
+	for (int i = 0; i < sizeof(material->bending.d)/sizeof(double); i++)
+		((double*)&material->bending.d)[i] *= bending_mult;
+	// init others
+
+	fs >> tab >> material->damping;
+	fs >> tab >> material->strain_min;
+	fs >> tab >> material->strain_max;
+	material->yield_curv = infinity;
+	fs >> tab >> material->weakening;
+	cloth->materials.push_back(material);
+
+	// init remeshing parameter
+	fs >> tab >> cloth->remeshing.refine_angle;
+	fs >> tab >> cloth->remeshing.refine_compression;
+	fs >> tab >> cloth->remeshing.refine_velocity;
+	fs >> tab >> cloth->remeshing.size_min;
+	fs >> tab >> cloth->remeshing.size_max;
+	fs >> tab >> cloth->remeshing.aspect_min;
+
+	fs.close();
+	// save to simulation
+	return cloth;
 }

@@ -30,7 +30,9 @@
 #include "cmcloth.h"
 #include "constraint.h"
 
-std::vector<Vec2> get_strain_limits (const std::vector<Cloth> &cloths);
+typedef std::tr1::shared_ptr<Cloth> SmtClothPtr;
+
+std::vector<Vec2> get_strain_limits (const std::vector<SmtClothPtr> &cloths);
 
 void strain_limiting (std::vector<Mesh*> &meshes,
                       const std::vector<Vec2> &strain_limits,
