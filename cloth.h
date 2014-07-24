@@ -122,9 +122,9 @@ public:
 	QOpenGLBuffer* normal_buffer() { return normal_buffer_; }
 	QOpenGLBuffer* texcoord_buffer() { return texcoord_buffer_; }
 	QOpenGLVertexArrayObject* vao() { return vao_; }
-	void setVAO(QOpenGLVertexArrayObject* pvao) { vao_ = pvao; init_buffer(); }
+	void setVAO(QOpenGLVertexArrayObject* pvao) { vao_ = pvao; cloth_init_buffer(); }
 	size_t face_count();
-	void update(const float * trans) { /*cloth_handler.transform_cloth(trans);*/ update_buffer();}
+	void update(const float * trans) { /*cloth_handler.transform_cloth(trans);*/ cloth_update_buffer();}
 	void initOBS(double * position, double * texcoords, int * indices, size_t faceNum);
 	void updateOBS(double * position);
 	void startSimulate();
@@ -132,12 +132,12 @@ public:
 	void initCmFile(const char * filename, int totalFrame);
 	void writeToCmFile(int frame);
 	void saveCmFile();
-	void loadFrame(int frame) {/*cloth_handler.load_frame(frame);*/update_buffer();}
+	void loadFrame(int frame) {/*cloth_handler.load_frame(frame);*/cloth_update_buffer();}
 	void loadCmFile(const char * filename);
 
 private:
-	void init_buffer();
-	void update_buffer();
+	void cloth_init_buffer();
+	void cloth_update_buffer();
 
 	// 网格
 	const SmtClothPtr cloth_;
@@ -150,6 +150,9 @@ private:
 	QOpenGLBuffer*	texcoord_buffer_;
 	QOpenGLVertexArrayObject* vao_;
 
+	std::vector<float> cloth_position_buffer_;
+	std::vector<float> cloth_normal_buffer_;
+	std::vector<float> cloth_texcoord_buffer_;
 	// 物理参数
 };
 
