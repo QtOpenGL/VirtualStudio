@@ -210,8 +210,11 @@ void Scene::renderClothes() const
 	/*if (!avatar_)
 		return;*/
 	clothes_[0]->update(transform_);
-	QOpenGLVertexArrayObject::Binder binder( clothes_[0]->vao() );
-	glDrawArrays(GL_TRIANGLES, 0, clothes_[0]->face_count() * 3);
+	for(size_t i = 0; i < clothes_.size(); ++i)
+	{
+		QOpenGLVertexArrayObject::Binder binder( clothes_[i]->vao() );
+		glDrawArrays(GL_TRIANGLES, 0, clothes_[i]->face_count() * 3);
+	}
 }
 
 void Scene::reset_transform()
@@ -423,23 +426,29 @@ void Scene::prepareAvatarTex()
 // wunf
 void Scene::prepareClothVAO()
 {
-	clothes_[0]->setVAO(new QOpenGLVertexArrayObject(this));
-	clothes_[0]->vao()->create();
-	QOpenGLVertexArrayObject::Binder binder( clothes_[0]->vao() );
-	QOpenGLShaderProgramPtr shader = material_->shader();
-	shader->bind();
+	for(size_t i = 0; i < clothes_.size(); ++i)
+	{
+		if(!clothes_[i]->vao())
+		{
+			clothes_[i]->setVAO(new QOpenGLVertexArrayObject(this));
+			clothes_[i]->vao()->create();
+			QOpenGLVertexArrayObject::Binder binder( clothes_[i]->vao() );
+			QOpenGLShaderProgramPtr shader = material_->shader();
+			shader->bind();
 
-	clothes_[0]->position_buffer()->bind();
-	shader->enableAttributeArray( "VertexPosition" );
-	shader->setAttributeBuffer( "VertexPosition", GL_FLOAT, 0, 3 );	
+			clothes_[i]->position_buffer()->bind();
+			shader->enableAttributeArray( "VertexPosition" );
+			shader->setAttributeBuffer( "VertexPosition", GL_FLOAT, 0, 3 );	
 
-	clothes_[0]->normal_buffer()->bind();
-	shader->enableAttributeArray( "VertexNormal" );
-	shader->setAttributeBuffer( "VertexNormal", GL_FLOAT, 0, 3 );
+			clothes_[i]->normal_buffer()->bind();
+			shader->enableAttributeArray( "VertexNormal" );
+			shader->setAttributeBuffer( "VertexNormal", GL_FLOAT, 0, 3 );
 
-	clothes_[0]->texcoord_buffer()->bind();
-	shader->enableAttributeArray( "VertexTexCoord" );
-	shader->setAttributeBuffer( "VertexTexCoord", GL_FLOAT, 0, 2 );
+			clothes_[i]->texcoord_buffer()->bind();
+			shader->enableAttributeArray( "VertexTexCoord" );
+			shader->setAttributeBuffer( "VertexTexCoord", GL_FLOAT, 0, 2 );
+		}
+	}
 }
 
 void Scene::rotate( const QPoint& prevPos, const QPoint& curPos )

@@ -2,11 +2,11 @@
 #include "ClothMotion\simulation\cmcloth.h"
 
 
-zfCloth::zfCloth(void) : cloth_(NULL)
+zfCloth::zfCloth(void) : cloth_(NULL), position_buffer_(NULL), normal_buffer_(NULL), texcoord_buffer_(NULL), vao_(NULL)
 {
 }
 
-zfCloth::zfCloth(SmtClothPtr cloth) : cloth_(cloth)
+zfCloth::zfCloth(SmtClothPtr cloth) : cloth_(cloth), position_buffer_(NULL), normal_buffer_(NULL), texcoord_buffer_(NULL), vao_(NULL)
 {
 }
 
