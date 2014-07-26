@@ -209,7 +209,9 @@ void Scene::renderClothes() const
 {
 	/*if (!avatar_)
 		return;*/
-	clothes_[0]->update(transform_);
+	//clothes_[0]->update(transform_);
+	cloth_handler_->transform_cloth(transform_, 0);
+	clothes_[0]->cloth_update_buffer();
 	for(size_t i = 0; i < clothes_.size(); ++i)
 	{
 		QOpenGLVertexArrayObject::Binder binder( clothes_[i]->vao() );

@@ -45,7 +45,7 @@ public:
 	void sim_next_step();
 	bool load_cmfile_to_replay(const char * fileName);
 	void load_frame(int frame);
-	void transform_cloth(const float * transform);
+	void transform_cloth(const float * transform, size_t clothIndex);
 
 	void init_cmfile(const char * fileName, int totalFrame);
 	void write_frame_to_cmfile(int frame);

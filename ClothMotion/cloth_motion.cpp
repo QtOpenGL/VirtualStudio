@@ -197,11 +197,11 @@ void ClothHandler::add_clothes_to_handler(const char * filename)
 	sim_->cloths.push_back(cloth);
 }
 
-void ClothHandler::transform_cloth(const float * transform)
+void ClothHandler::transform_cloth(const float * transform, size_t clothIndex)
 {
 	if(sim_->cloths.empty())
 		return;
-	SmtClothPtr & cloth = sim_->cloths[0];
+	SmtClothPtr & cloth = sim_->cloths[clothIndex];
 
 	Transformation trans;
 	trans.translation = Vec3(transform[0], transform[1], transform[2]);// edit
