@@ -48,7 +48,7 @@ public:
 	void transform_cloth(const float * transform, size_t clothIndex);
 
 	void init_cmfile(const char * fileName, int totalFrame);
-	void write_frame_to_cmfile(int frame);
+	void write_frame(int frame);
 	void save_cmfile();
 
 	size_t face_count();

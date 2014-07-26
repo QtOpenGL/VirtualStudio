@@ -601,7 +601,7 @@ void Scene::initCmFile(const char * filename)
 
 void Scene::writeAFrame(int frame)
 {
-	//clothes_[0]->writeToCmFile(frame);
+	cloth_handler_->write_frame(frame);
 }
 
 void Scene::save()

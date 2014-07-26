@@ -309,6 +309,15 @@ void ClothHandler::init_simulation()
 
 void ClothHandler::begin_simulate()
 {
+	if(clothes_frame_.size())
+	{
+		for(size_t i = 0; i < clothes_frame_.size(); ++i)
+		{
+			clothes_frame_[i].clear();
+		}
+		clothes_frame_.clear();
+	}
+	clothes_frame_.resize(clothes_.size());
 	init_simulation();
 	prepare(*sim_);
 	relax_initial_state(*sim_);
@@ -400,29 +409,14 @@ void ClothHandler::init_cmfile(const char * fileName, int totalFrame)
 	clothMotionFile_ << "total_frame " << totalFrame << std::endl;*/
 }
 
-void ClothHandler::write_frame_to_cmfile(int frame)
+void ClothHandler::write_frame(int frame)
 {
-	// abandonded
-
-	/*clothMotionFile_ << "frame " << frame << std::endl;
-	for(int cloth_index = 0; cloth_index < clothes_.size(); ++cloth_index)
+	for(size_t i = 0; i < clothes_.size(); i++)
 	{
-		Mesh & mesh = clothes_[cloth_index].mesh;
-		size_t vertexNum = mesh.faces.size() * 3;
-		clothMotionFile_ << "vertex " << vertexNum << std::endl;
-		for(int face_index = 0; face_index < mesh.faces.size(); ++face_index)
-		{
-			Face * face = mesh.faces[face_index];
-			for(int vert_index = 0; vert_index < 3; ++vert_index)
-			{
-				Vert * vert = face->v[vert_index];
-				clothMotionFile_ << vert->node->x[0] << " " << vert->node->x[1] << " " << vert->node->x[2] << std::endl;
-			}
-		}	
-	}*/
-	/*SmtClothPtr copy_cloth(new Cloth);
-	copy_cloth->mesh = deep_copy(clothes_[0]->mesh);
-	clothes_frame_.push_back(copy_cloth);*/
+		SmtClothPtr copy_cloth(new Cloth);
+		copy_cloth->mesh = deep_copy(clothes_[i]->mesh);
+		clothes_frame_[i].push_back(copy_cloth);
+	}
 }
 
 void ClothHandler::save_cmfile()
