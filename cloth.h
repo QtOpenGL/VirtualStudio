@@ -134,10 +134,10 @@ public:
 	void saveCmFile();
 	void loadFrame(int frame) {/*cloth_handler.load_frame(frame);*/cloth_update_buffer();}
 	void loadCmFile(const char * filename);
+	void cloth_update_buffer();
 
 private:
 	void cloth_init_buffer();
-	void cloth_update_buffer();
 
 	// Íø¸ñ
 	const SmtClothPtr cloth_;

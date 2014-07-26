@@ -328,7 +328,7 @@ void ClothHandler::sim_next_step()
 
 bool ClothHandler::load_cmfile_to_replay(const char * fileName)
 {
-	std::ifstream ifs(fileName);
+	/*std::ifstream ifs(fileName);
 	std::string tag;
 	int cloth, frame, total_frame;
 
@@ -387,7 +387,7 @@ bool ClothHandler::load_cmfile_to_replay(const char * fileName)
 			clothes_frame_.push_back(cloth);
 		}
 	}
-	sim_->cloths.resize(1);
+	sim_->cloths.resize(1);*/
 	return true;
 }
 
@@ -420,9 +420,9 @@ void ClothHandler::write_frame_to_cmfile(int frame)
 			}
 		}	
 	}*/
-	SmtClothPtr copy_cloth(new Cloth);
+	/*SmtClothPtr copy_cloth(new Cloth);
 	copy_cloth->mesh = deep_copy(clothes_[0]->mesh);
-	clothes_frame_.push_back(copy_cloth);
+	clothes_frame_.push_back(copy_cloth);*/
 }
 
 void ClothHandler::save_cmfile()
@@ -449,7 +449,8 @@ void ClothHandler::load_frame(int frame)
 {
 	if(frame > static_cast<int>(clothes_frame_.size()) - 1)
 		frame = static_cast<int>(clothes_frame_.size()) - 1;
-	sim_->cloths[0] = clothes_frame_[frame];
+	for(size_t i = 0; i < sim_->cloths.size(); ++i)
+		sim_->cloths[i] = clothes_frame_[i][frame];
 }
 
 SmtClothPtr ClothHandler::load_cloth_from_obj(const char * filename)

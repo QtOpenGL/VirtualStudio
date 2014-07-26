@@ -64,7 +64,7 @@ private:
 	int frame_;
 	std::tr1::shared_ptr<Timer> fps_;
 	std::vector<SmtClothPtr> & clothes_;
-	std::vector<SmtClothPtr > clothes_frame_;
+	std::vector<std::vector<SmtClothPtr > > clothes_frame_;
 	std::vector<float> position_buffer_;
 	std::vector<float> normal_buffer_;
 	std::vector<float> texcoord_buffer_;

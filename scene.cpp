@@ -535,7 +535,12 @@ void Scene::initAvatarToSimulate()
 		indices[i] = index;
 	}
 
-	clothes_[0]->initOBS(
+	/*clothes_[0]->initOBS(
+		position, 
+		texcoord, 
+		indices, 
+		skin.num_triangles);*/
+	cloth_handler_->init_avatars_to_handler(
 		position, 
 		texcoord, 
 		indices, 
@@ -559,50 +564,56 @@ void Scene::updateAvatarToSimulate()
 			position[i * 3 + j] = point[j];
 	}
 
-	clothes_[0]->updateOBS(position);
+	//clothes_[0]->updateOBS(position);
+	cloth_handler_->update_avatars_to_handler(position);
 	delete[] position;
 }
 
 void Scene::startSimulate()
 {
-	clothes_[0]->startSimulate();
+	//clothes_[0]->startSimulate();
+	cloth_handler_->begin_simulate();
 	replay_ = true;
 	cloth_loaded = false;
 }
 
 void Scene::simulateStep()
 {
-	clothes_[0]->simulateStep();
+	//clothes_[0]->simulateStep();
+	cloth_handler_->sim_next_step();
 }
 
 // wunf
 void Scene::updateClothAnimation(int frame)
 {
-	clothes_[0]->loadFrame(frame);
+	//clothes_[0]->loadFrame(frame);
+	cloth_handler_->load_frame(frame);
+	for(size_t i = 0; i < clothes_.size(); ++i)
+		clothes_[i]->cloth_update_buffer();
 }
 
 void Scene::initCmFile(const char * filename)
 {
-	clothes_[0]->initCmFile(filename, totalFrame());
+	//clothes_[0]->initCmFile(filename, totalFrame());
 }
 
 void Scene::writeAFrame(int frame)
 {
-	clothes_[0]->writeToCmFile(frame);
+	//clothes_[0]->writeToCmFile(frame);
 }
 
 void Scene::save()
 {
-	clothes_[0]->saveCmFile();
+	//clothes_[0]->saveCmFile();
 }
 
 void Scene::load_cm_file(const char * filename)
 {
-	clothes_.push_back(new zfCloth);
+	/*clothes_.push_back(new zfCloth);
 	clothes_[0]->loadCmFile(filename);
 	prepareClothVAO();
 	replay_ = true;
-	cloth_loaded = false;
+	cloth_loaded = false;*/
 }
 
 void Scene::setClothTexture(QString texture_name)
