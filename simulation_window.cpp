@@ -219,7 +219,7 @@ void SimulationWindow::startSimulate()
 		//}
 		//glReadBuffer(GL_FRONT);
 	}
-
+	scene_->finishedSimulate();
 	/*AviGen->ReleaseEngine();
 	delete[] bmBits;
 	delete AviGen;*/
@@ -239,6 +239,7 @@ void SimulationWindow::startSimulate()
 		ofs.close();
 	}*/
 	QMessageBox::information(NULL, "Simulation finished", "Simulation finished.", QMessageBox::Ok);
+
 }
 
 void SimulationWindow::record()

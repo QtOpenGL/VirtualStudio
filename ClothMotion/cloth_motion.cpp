@@ -437,14 +437,14 @@ void ClothHandler::apply_velocity(Mesh &mesh, const Velocity &vel)
 
 size_t ClothHandler::face_count() { return sim_->cloths[0]->mesh.faces.size(); }
 
-size_t ClothHandler::cloth_num() { return sim_->cloths.size(); }
+size_t ClothHandler::cloth_num() { return clothes_.size(); }
 
 void ClothHandler::load_frame(int frame)
 {
-	if(frame > static_cast<int>(clothes_frame_.size()) - 1)
-		frame = static_cast<int>(clothes_frame_.size()) - 1;
+	if(frame > static_cast<int>(clothes_frame_[0].size()) - 1)
+		frame = static_cast<int>(clothes_frame_[0].size()) - 1;
 	for(size_t i = 0; i < sim_->cloths.size(); ++i)
-		sim_->cloths[i] = clothes_frame_[i][frame];
+		clothes_[i]->mesh = clothes_frame_[i][frame]->mesh;
 }
 
 SmtClothPtr ClothHandler::load_cloth_from_obj(const char * filename)

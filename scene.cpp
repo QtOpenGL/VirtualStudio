@@ -210,10 +210,10 @@ void Scene::renderClothes() const
 	/*if (!avatar_)
 		return;*/
 	//clothes_[0]->update(transform_);
-	cloth_handler_->transform_cloth(transform_, 0);
-	clothes_[0]->cloth_update_buffer();
+	cloth_handler_->transform_cloth(transform_, 0);	
 	for(size_t i = 0; i < clothes_.size(); ++i)
 	{
+		clothes_[i]->cloth_update_buffer();
 		QOpenGLVertexArrayObject::Binder binder( clothes_[i]->vao() );
 		glDrawArrays(GL_TRIANGLES, 0, clothes_[i]->face_count() * 3);
 	}
@@ -575,8 +575,8 @@ void Scene::startSimulate()
 {
 	//clothes_[0]->startSimulate();
 	cloth_handler_->begin_simulate();
-	replay_ = true;
-	cloth_loaded = false;
+	//replay_ = true;
+	//cloth_loaded = false;
 }
 
 void Scene::simulateStep()
@@ -585,13 +585,16 @@ void Scene::simulateStep()
 	cloth_handler_->sim_next_step();
 }
 
+void Scene::finishedSimulate()
+{
+	replay_ = true;
+}
+
 // wunf
 void Scene::updateClothAnimation(int frame)
 {
 	//clothes_[0]->loadFrame(frame);
 	cloth_handler_->load_frame(frame);
-	for(size_t i = 0; i < clothes_.size(); ++i)
-		clothes_[i]->cloth_update_buffer();
 }
 
 void Scene::initCmFile(const char * filename)

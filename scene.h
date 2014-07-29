@@ -99,6 +99,7 @@ public:
 	void updateAvatarToSimulate();
 	void startSimulate();
 	void simulateStep();
+	void finishedSimulate();
 	void initCmFile(const char * filename);
 	void writeAFrame(int frame);
 	void save();
