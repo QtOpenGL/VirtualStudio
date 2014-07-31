@@ -7,8 +7,5 @@ Release/
 x64/
 ^moc*.cpp$
 *.tlog
-*~
-*.opensdf
-*.suo
-*.vcxproj*
 *.swp
+VirtualStudio.opensdf

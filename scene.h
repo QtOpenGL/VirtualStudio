@@ -20,6 +20,7 @@
 class Camera;
 class Light;
 class QOpenGLFunctions_4_0_Core;
+class ClothHandler;
 /************************************************************************/
 /* 仿真场景                                                              */
 /************************************************************************/
@@ -56,7 +57,7 @@ public:
 	void restoreToBindpose();						
 
 	void renderAvatar() const;
-	void renderClothes() const;
+	void renderClothes(QOpenGLShaderProgramPtr & shader) const;
 
 	int totalFrame();
 
@@ -98,12 +99,13 @@ public:
 	void updateAvatarToSimulate();
 	void startSimulate();
 	void simulateStep();
+	void finishedSimulate();
 	void initCmFile(const char * filename);
 	void writeAFrame(int frame);
 	void save();
 	// 更新cloth动画，wunf
 	void updateClothAnimation(int frame);
-	void setClothColor(QVector4D color) { color_ = color; cloth_has_texture_ = false; }
+	void setClothColor(QVector4D color, size_t index) { color_[index] = color; cloth_has_texture_ = false; }
 
 	bool is_replay() {return replay_;}
 	void load_cm_file(const char * filename);
@@ -139,6 +141,7 @@ private:
 	QVector<Light*>	lights_;	// 灯光
 	Avatar*			avatar_;	// 模特
 	QVector<zfCloth*>	clothes_;	// 布料
+	ClothHandler*	cloth_handler_;
 
 	MaterialPtr	material_;
 	// The floor "object"
@@ -171,7 +174,8 @@ private:
 	bool cloth_loaded;
 	float transform_[8];
 
-	QVector4D color_;
+	QVector<QVector4D> color_;
+	static const QVector4D ori_color_[4];
 
 	bool cloth_has_texture_;
 };

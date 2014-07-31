@@ -24,8 +24,8 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
-#ifndef CLOTH_H
-#define CLOTH_H
+#ifndef CMCLOTH_H
+#define CMCLOTH_H
 
 //#include "dde.hpp"
 #include "mesh.h"

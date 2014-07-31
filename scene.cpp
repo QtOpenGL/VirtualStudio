@@ -15,11 +15,18 @@
 #include "camera.h"
 #include "light.h"
 #include "animation_editor_widget.h"
+#include "ClothMotion\cloth_motion.h"
 
 /************************************************************************/
 /* ·ÂÕæ³¡¾°                                                              */
 /************************************************************************/
-Scene::Scene( QObject* parent ) 
+const QVector4D Scene::ori_color_[4] = { 
+	QVector4D(1.0f, 1.0f, 1.0f, 1.0f),
+	QVector4D(0.5f, 0.5f, 1.0f, 1.0f),
+	QVector4D(0.5f, 1.0f, 0.5f, 1.0f),
+	QVector4D(1.0f, 0.5f, 0.5f, 1.0f) };
+
+Scene::Scene( QObject* parent )
 	: ai_scene_( nullptr ), 
 	  synthetic_animation_( nullptr ), 
 	  camera_( new Camera(this) ),
@@ -31,8 +38,8 @@ Scene::Scene( QObject* parent )
 	  // wunf
 	  cloth_loaded(false),
 	  replay_(false),
-	  color_(1.0f, 1.0f, 1.0f, 1.0f),
-	  cloth_has_texture_(false)
+	  cloth_has_texture_(false),
+	  cloth_handler_(new ClothHandler())
 {
 	model_matrix_.setToIdentity();
 
@@ -60,6 +67,7 @@ Scene::~Scene()
 		delete clothes_[i];
 
 	delete synthetic_animation_;
+	delete cloth_handler_;
 
 	aiReleaseImport(ai_scene_);
 }
@@ -119,7 +127,6 @@ void Scene::render()
 	shader->setUniformValue("GPUSkinning", false);
 	shader->setUniformValue("Light2.Direction", /*view_matrix * */QVector4D(0.0f, -1.0f, 0.0f, 0.0f));
 	shader->setUniformValue("Light2.Intensity", QVector3D(1.0f, 1.0f, 1.0f));
-	shader->setUniformValue("Color", color_);
 	shader->setUniformValue("Material.Ka", QVector3D( 0.5f, 0.5f, 0.5f ));
 	shader->setUniformValue("Material.Kd", QVector3D( 0.5f, 0.5f, 0.5f ));
 	shader->setUniformValue("Material.Ks", QVector3D( 0.0f, 0.0f, 0.0f ));
@@ -146,7 +153,7 @@ void Scene::render()
 	else
 		glfunctions_->glBindTexture(GL_TEXTURE_2D, texture_ids_[2]);
 	if(cloth_loaded || replay_)
-		renderClothes();
+		renderClothes(shader);
 	reset_transform();
 
 	shader->release();
@@ -179,9 +186,12 @@ void Scene::importAvatar( const QString& filename )
 // wunf
 void Scene::importCloth(const QString& filename)
 {
-	zfCloth * cloth = new zfCloth();
-	cloth->load(filename.toStdString().c_str());
-	clothes_.push_back(cloth);
+	SmtClothPtr cloth = ClothHandler::load_cloth_from_obj(filename.toStdString().c_str());
+	zfCloth * zfcloth = new zfCloth(cloth);
+	cloth_handler_->add_clothes_to_handler(cloth);
+	//cloth->load_zfcloth(filename.toStdString().c_str());
+	clothes_.push_back(zfcloth);
+	color_.push_back(ori_color_[(clothes_.size() - 1) % 4]);
 	prepareClothVAO();
 	//prepareClothTex();
 	cloth_loaded = true;
@@ -200,13 +210,19 @@ void Scene::renderAvatar() const
 }
 
 // wunf
-void Scene::renderClothes() const
+void Scene::renderClothes(QOpenGLShaderProgramPtr & shader) const
 {
 	/*if (!avatar_)
 		return;*/
-	clothes_[0]->update(transform_);
-	QOpenGLVertexArrayObject::Binder binder( clothes_[0]->vao() );
-	glDrawArrays(GL_TRIANGLES, 0, clothes_[0]->face_count() * 3);
+	//clothes_[0]->update(transform_);
+	cloth_handler_->transform_cloth(transform_, 0);	
+	for(size_t i = 0; i < clothes_.size(); ++i)
+	{
+		shader->setUniformValue("Color", color_[i]);
+		clothes_[i]->cloth_update_buffer();
+		QOpenGLVertexArrayObject::Binder binder( clothes_[i]->vao() );
+		glDrawArrays(GL_TRIANGLES, 0, clothes_[i]->face_count() * 3);
+	}
 }
 
 void Scene::reset_transform()
@@ -418,23 +434,29 @@ void Scene::prepareAvatarTex()
 // wunf
 void Scene::prepareClothVAO()
 {
-	clothes_[0]->setVAO(new QOpenGLVertexArrayObject(this));
-	clothes_[0]->vao()->create();
-	QOpenGLVertexArrayObject::Binder binder( clothes_[0]->vao() );
-	QOpenGLShaderProgramPtr shader = material_->shader();
-	shader->bind();
+	for(size_t i = 0; i < clothes_.size(); ++i)
+	{
+		if(!clothes_[i]->vao())
+		{
+			clothes_[i]->setVAO(new QOpenGLVertexArrayObject(this));
+			clothes_[i]->vao()->create();
+			QOpenGLVertexArrayObject::Binder binder( clothes_[i]->vao() );
+			QOpenGLShaderProgramPtr shader = material_->shader();
+			shader->bind();
 
-	clothes_[0]->position_buffer()->bind();
-	shader->enableAttributeArray( "VertexPosition" );
-	shader->setAttributeBuffer( "VertexPosition", GL_FLOAT, 0, 3 );	
+			clothes_[i]->position_buffer()->bind();
+			shader->enableAttributeArray( "VertexPosition" );
+			shader->setAttributeBuffer( "VertexPosition", GL_FLOAT, 0, 3 );	
 
-	clothes_[0]->normal_buffer()->bind();
-	shader->enableAttributeArray( "VertexNormal" );
-	shader->setAttributeBuffer( "VertexNormal", GL_FLOAT, 0, 3 );
+			clothes_[i]->normal_buffer()->bind();
+			shader->enableAttributeArray( "VertexNormal" );
+			shader->setAttributeBuffer( "VertexNormal", GL_FLOAT, 0, 3 );
 
-	clothes_[0]->texcoord_buffer()->bind();
-	shader->enableAttributeArray( "VertexTexCoord" );
-	shader->setAttributeBuffer( "VertexTexCoord", GL_FLOAT, 0, 2 );
+			clothes_[i]->texcoord_buffer()->bind();
+			shader->enableAttributeArray( "VertexTexCoord" );
+			shader->setAttributeBuffer( "VertexTexCoord", GL_FLOAT, 0, 2 );
+		}
+	}
 }
 
 void Scene::rotate( const QPoint& prevPos, const QPoint& curPos )
@@ -521,7 +543,12 @@ void Scene::initAvatarToSimulate()
 		indices[i] = index;
 	}
 
-	clothes_[0]->initOBS(
+	/*clothes_[0]->initOBS(
+		position, 
+		texcoord, 
+		indices, 
+		skin.num_triangles);*/
+	cloth_handler_->init_avatars_to_handler(
 		position, 
 		texcoord, 
 		indices, 
@@ -545,50 +572,59 @@ void Scene::updateAvatarToSimulate()
 			position[i * 3 + j] = point[j];
 	}
 
-	clothes_[0]->updateOBS(position);
+	//clothes_[0]->updateOBS(position);
+	cloth_handler_->update_avatars_to_handler(position);
 	delete[] position;
 }
 
 void Scene::startSimulate()
 {
-	clothes_[0]->startSimulate();
-	replay_ = true;
-	cloth_loaded = false;
+	//clothes_[0]->startSimulate();
+	cloth_handler_->begin_simulate();
+	//replay_ = true;
+	//cloth_loaded = false;
 }
 
 void Scene::simulateStep()
 {
-	clothes_[0]->simulateStep();
+	//clothes_[0]->simulateStep();
+	cloth_handler_->sim_next_step();
+}
+
+void Scene::finishedSimulate()
+{
+	replay_ = true;
 }
 
 // wunf
 void Scene::updateClothAnimation(int frame)
 {
-	clothes_[0]->loadFrame(frame);
+	//clothes_[0]->loadFrame(frame);
+	cloth_handler_->load_frame(frame);
 }
 
 void Scene::initCmFile(const char * filename)
 {
-	clothes_[0]->initCmFile(filename, totalFrame());
+	//clothes_[0]->initCmFile(filename, totalFrame());
 }
 
 void Scene::writeAFrame(int frame)
 {
-	clothes_[0]->writeToCmFile(frame);
+	cloth_handler_->write_frame(frame);
 }
 
 void Scene::save()
 {
-	clothes_[0]->saveCmFile();
+	//clothes_[0]->saveCmFile();
 }
 
 void Scene::load_cm_file(const char * filename)
 {
-	clothes_.push_back(new zfCloth);
+	/*clothes_.push_back(new zfCloth);
 	clothes_[0]->loadCmFile(filename);
 	prepareClothVAO();
 	replay_ = true;
-	cloth_loaded = false;
+	cloth_loaded = false;*/
 }
 
 void Scene::setClothTexture(QString texture_name)

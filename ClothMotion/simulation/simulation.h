@@ -37,6 +37,8 @@
 #include <string>
 #include <vector>
 
+typedef std::tr1::shared_ptr<Cloth> SmtClothPtr;
+
 struct Wind {
     double density;
     Vec3 velocity;
@@ -47,7 +49,7 @@ struct Simulation {
     // variables
     double time;
     int frame, step;
-    std::vector<Cloth> cloths;
+    std::vector<SmtClothPtr> cloths;
     // constants
     int frame_steps;
     double frame_time, step_time;
