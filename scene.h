@@ -57,7 +57,7 @@ public:
 	void restoreToBindpose();						
 
 	void renderAvatar() const;
-	void renderClothes() const;
+	void renderClothes(QOpenGLShaderProgramPtr & shader) const;
 
 	int totalFrame();
 
@@ -105,7 +105,7 @@ public:
 	void save();
 	// ¸üÐÂcloth¶¯»­£¬wunf
 	void updateClothAnimation(int frame);
-	void setClothColor(QVector4D color) { color_ = color; cloth_has_texture_ = false; }
+	void setClothColor(QVector4D color, size_t index) { color_[index] = color; cloth_has_texture_ = false; }
 
 	bool is_replay() {return replay_;}
 	void load_cm_file(const char * filename);
@@ -174,7 +174,8 @@ private:
 	bool cloth_loaded;
 	float transform_[8];
 
-	QVector4D color_;
+	QVector<QVector4D> color_;
+	static const QVector4D ori_color_[4];
 
 	bool cloth_has_texture_;
 };

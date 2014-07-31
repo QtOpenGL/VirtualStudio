@@ -20,7 +20,13 @@
 /************************************************************************/
 /* ·ÂÕæ³¡¾°                                                              */
 /************************************************************************/
-Scene::Scene( QObject* parent ) 
+const QVector4D Scene::ori_color_[4] = { 
+	QVector4D(1.0f, 1.0f, 1.0f, 1.0f),
+	QVector4D(0.5f, 0.5f, 1.0f, 1.0f),
+	QVector4D(0.5f, 1.0f, 0.5f, 1.0f),
+	QVector4D(1.0f, 0.5f, 0.5f, 1.0f) };
+
+Scene::Scene( QObject* parent )
 	: ai_scene_( nullptr ), 
 	  synthetic_animation_( nullptr ), 
 	  camera_( new Camera(this) ),
@@ -32,7 +38,6 @@ Scene::Scene( QObject* parent )
 	  // wunf
 	  cloth_loaded(false),
 	  replay_(false),
-	  color_(1.0f, 1.0f, 1.0f, 1.0f),
 	  cloth_has_texture_(false),
 	  cloth_handler_(new ClothHandler())
 {
@@ -122,7 +127,6 @@ void Scene::render()
 	shader->setUniformValue("GPUSkinning", false);
 	shader->setUniformValue("Light2.Direction", /*view_matrix * */QVector4D(0.0f, -1.0f, 0.0f, 0.0f));
 	shader->setUniformValue("Light2.Intensity", QVector3D(1.0f, 1.0f, 1.0f));
-	shader->setUniformValue("Color", color_);
 	shader->setUniformValue("Material.Ka", QVector3D( 0.5f, 0.5f, 0.5f ));
 	shader->setUniformValue("Material.Kd", QVector3D( 0.5f, 0.5f, 0.5f ));
 	shader->setUniformValue("Material.Ks", QVector3D( 0.0f, 0.0f, 0.0f ));
@@ -149,7 +153,7 @@ void Scene::render()
 	else
 		glfunctions_->glBindTexture(GL_TEXTURE_2D, texture_ids_[2]);
 	if(cloth_loaded || replay_)
-		renderClothes();
+		renderClothes(shader);
 	reset_transform();
 
 	shader->release();
@@ -187,6 +191,7 @@ void Scene::importCloth(const QString& filename)
 	cloth_handler_->add_clothes_to_handler(cloth);
 	//cloth->load_zfcloth(filename.toStdString().c_str());
 	clothes_.push_back(zfcloth);
+	color_.push_back(ori_color_[(clothes_.size() - 1) % 4]);
 	prepareClothVAO();
 	//prepareClothTex();
 	cloth_loaded = true;
@@ -205,7 +210,7 @@ void Scene::renderAvatar() const
 }
 
 // wunf
-void Scene::renderClothes() const
+void Scene::renderClothes(QOpenGLShaderProgramPtr & shader) const
 {
 	/*if (!avatar_)
 		return;*/
@@ -213,6 +218,7 @@ void Scene::renderClothes() const
 	cloth_handler_->transform_cloth(transform_, 0);	
 	for(size_t i = 0; i < clothes_.size(); ++i)
 	{
+		shader->setUniformValue("Color", color_[i]);
 		clothes_[i]->cloth_update_buffer();
 		QOpenGLVertexArrayObject::Binder binder( clothes_[i]->vao() );
 		glDrawArrays(GL_TRIANGLES, 0, clothes_[i]->face_count() * 3);

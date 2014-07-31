@@ -478,7 +478,7 @@ void MainWindow::changeClothColor()
 	if (okToContinue()) {
 		QColor color = QColorDialog::getColor();
 		QVector4D colorvec(color.redF(), color.greenF(), color.blueF(), color.alphaF());
-		scene_->setClothColor(colorvec);
+		scene_->setClothColor(colorvec, 0);
 		simulation_view_->paintGL();
 	}
 }
