@@ -33,6 +33,7 @@ public:
 
 	virtual void initialize();
 	virtual void render();
+	virtual void renderForPick();
 	virtual void update(float t);
 	virtual void resize( int w, int h );
 
@@ -58,6 +59,7 @@ public:
 
 	void renderAvatar() const;
 	void renderClothes(QOpenGLShaderProgramPtr & shader) const;
+	void renderClothesForPick(QOpenGLShaderProgramPtr & shader) const;
 
 	int totalFrame();
 
@@ -105,11 +107,13 @@ public:
 	void save();
 	// 更新cloth动画，wunf
 	void updateClothAnimation(int frame);
-	void setClothColor(QVector4D color, size_t index) { color_[index] = color; cloth_has_texture_ = false; }
+	void setClothColor(QVector4D color) { color_[cur_cloth_index_] = color; cloth_has_texture_ = false; }
 
 	bool is_replay() {return replay_;}
+	bool is_clothLoaded() {return cloth_loaded_;}
 	void load_cm_file(const char * filename);
 	void setClothTexture(QString texture_name);
+	void pickCloth(BYTE red, bool hover);
 
 private:
 	bool replay_;
@@ -171,13 +175,15 @@ private:
 	// wunf
 	void reset_transform();
 
-	bool cloth_loaded;
+	bool cloth_loaded_;
 	float transform_[8];
 
 	QVector<QVector4D> color_;
 	static const QVector4D ori_color_[4];
 
 	bool cloth_has_texture_;
+	int hover_cloth_index_;
+	int cur_cloth_index_;
 };
 
 // UI相关类

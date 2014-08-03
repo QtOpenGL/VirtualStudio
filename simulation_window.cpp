@@ -70,6 +70,19 @@ void SimulationWindow::paintGL()
 	}
 }
 
+void SimulationWindow::paintForPick()
+{
+	if (isExposed()) {
+		// Make the context current
+		context_->makeCurrent(this);
+
+		// Do the rendering (to the back buffer)
+		scene_->renderForPick();
+
+		//context_->swapBuffers(this);
+	}
+}
+
 void SimulationWindow::mousePressEvent( QMouseEvent *event )
 {
 	if (event->button() == Qt::LeftButton) {
@@ -81,6 +94,25 @@ void SimulationWindow::mousePressEvent( QMouseEvent *event )
 
 void SimulationWindow::mouseMoveEvent( QMouseEvent *event )
 {
+	if(scene_->is_clothLoaded())
+	{
+		int wid = width(), hei = height();
+		//glViewport( 0, 0, wid, hei );
+		BYTE * data = new BYTE[(wid + 1) * (hei + 1) * 3];
+		QPoint pos = event->pos();
+		paintForPick();
+		glReadBuffer(GL_BACK);
+		glReadPixels(0,0,wid,hei,GL_BGR_EXT,GL_UNSIGNED_BYTE,data);
+		glReadBuffer(GL_FRONT);
+		BYTE red = data[((hei - pos.y()) * wid + pos.x()) * 3 + 2];
+		delete[] data;
+		bool hover = true;
+		if(event->buttons() & Qt::LeftButton)
+			hover = false;
+		scene_->pickCloth(red, hover);
+		paintGL();
+	}
+
 	if (event->buttons() & Qt::LeftButton) {
 		cur_pos_ = event->pos();
 		float dx = -12.0f * float(cur_pos_.x() - prev_pos_.x()) / width();
@@ -110,8 +142,6 @@ void SimulationWindow::mouseMoveEvent( QMouseEvent *event )
 		default: 
 			break;
 		}
-		paintGL();
-		prev_pos_ = cur_pos_;
 	}
 
 	QWindow::mouseMoveEvent(event);

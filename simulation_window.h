@@ -18,6 +18,7 @@ public:
 
 	void initializeGL();
 	void paintGL();
+	void paintForPick();
 
 	void startSimulate();
 	void record();

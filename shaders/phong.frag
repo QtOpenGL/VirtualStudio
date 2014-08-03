@@ -67,6 +67,12 @@ vec4 shadeWithNoMaterial()
 	return vec4(ambAndDiff, 1.0) * Color + vec4(spec, 1.0);
 }
 
+subroutine( ShadeModelType )
+vec4 shadeWithPureColor()
+{
+	return Color;
+}
+
 void main()
 {
 	FragColor = shadeModel();

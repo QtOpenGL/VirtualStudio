@@ -36,7 +36,7 @@ Scene::Scene( QObject* parent )
 	  interaction_mode_(ROTATE),
 	  glfunctions_(nullptr),
 	  // wunf
-	  cloth_loaded(false),
+	  cloth_loaded_(false),
 	  replay_(false),
 	  cloth_has_texture_(false),
 	  cloth_handler_(new ClothHandler())
@@ -47,7 +47,7 @@ Scene::Scene( QObject* parent )
 
 	display_mode_names_ << QStringLiteral( "shade" )
 						<< QStringLiteral( "shadeWithNoMaterial" )
-						<< QStringLiteral( "shadingwireframe" );
+						<< QStringLiteral( "shadeWithPureColor" );
 
 	interaction_mode_names_ << QStringLiteral( "rotate" )
 							<< QStringLiteral( "pan" )
@@ -95,7 +95,7 @@ void Scene::initialize()
 	QOpenGLShaderProgramPtr shader = material_->shader();
 
 	// Get subroutine indices DISPLAY_MODE_COUNT
-	for ( int i = 0; i < 2; ++i) {
+	for ( int i = 0; i < 3; ++i) {
 		display_mode_subroutines_[i] =
 			glfunctions_->glGetSubroutineIndex( shader->programId(),
 			GL_FRAGMENT_SHADER,
@@ -152,11 +152,49 @@ void Scene::render()
 		glfunctions_->glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &display_mode_subroutines_[1]);
 	else
 		glfunctions_->glBindTexture(GL_TEXTURE_2D, texture_ids_[2]);
-	if(cloth_loaded || replay_)
+	if(cloth_loaded_ || replay_)
 		renderClothes(shader);
 	reset_transform();
 
 	shader->release();
+}
+
+void Scene::renderForPick()
+{
+	if(cloth_loaded_ || replay_)
+	{
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+		material_->bind();
+		QOpenGLShaderProgramPtr shader = material_->shader();
+		shader->bind();
+
+		// Set the fragment shader display mode subroutine
+		glfunctions_->glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &display_mode_subroutines_[2]);
+
+		// Pass in the usual transformation matrices
+		model_matrix_.setToIdentity();
+		QMatrix4x4 view_matrix = camera_->getViewMatrix();
+		QMatrix4x4 mv = view_matrix * model_matrix_;
+		QMatrix4x4 projection_matrix = camera_->getProjectionMatrix();
+		QMatrix4x4 MVP = projection_matrix * mv;
+		shader->setUniformValue("ModelViewMatrix", mv);
+		shader->setUniformValue("ViewMatrix", view_matrix);
+		shader->setUniformValue("NormalMatrix", mv.normalMatrix());
+		shader->setUniformValue("MVP", MVP);  
+		shader->setUniformValue("GPUSkinning", false);
+		shader->setUniformValue("Light2.Direction", /*view_matrix * */QVector4D(0.0f, -1.0f, 0.0f, 0.0f));
+		shader->setUniformValue("Light2.Intensity", QVector3D(1.0f, 1.0f, 1.0f));
+		shader->setUniformValue("Material.Ka", QVector3D( 0.5f, 0.5f, 0.5f ));
+		shader->setUniformValue("Material.Kd", QVector3D( 0.5f, 0.5f, 0.5f ));
+		shader->setUniformValue("Material.Ks", QVector3D( 0.0f, 0.0f, 0.0f ));
+		shader->setUniformValue("Material.Shininess", 10.0f);
+
+		renderClothesForPick(shader);
+		reset_transform();
+
+		shader->release();
+	}
 }
 
 void Scene::update(float t)
@@ -194,8 +232,9 @@ void Scene::importCloth(const QString& filename)
 	color_.push_back(ori_color_[(clothes_.size() - 1) % 4]);
 	prepareClothVAO();
 	//prepareClothTex();
-	cloth_loaded = true;
+	cloth_loaded_ = true;
 	replay_ = false;
+	cur_cloth_index_ = clothes_.size() - 1;
 }
 
 void Scene::renderAvatar() const
@@ -215,10 +254,27 @@ void Scene::renderClothes(QOpenGLShaderProgramPtr & shader) const
 	/*if (!avatar_)
 		return;*/
 	//clothes_[0]->update(transform_);
-	cloth_handler_->transform_cloth(transform_, 0);	
+	cloth_handler_->transform_cloth(transform_, cur_cloth_index_);	
 	for(size_t i = 0; i < clothes_.size(); ++i)
 	{
-		shader->setUniformValue("Color", color_[i]);
+		QVector4D color = color_[i];
+		if(i == hover_cloth_index_)
+			color = color + QVector4D(0.2f, 0.2f, 0.2f, 0.0f);
+		shader->setUniformValue("Color", color);
+		clothes_[i]->cloth_update_buffer();
+		QOpenGLVertexArrayObject::Binder binder( clothes_[i]->vao() );
+		glDrawArrays(GL_TRIANGLES, 0, clothes_[i]->face_count() * 3);
+	}
+}
+
+void Scene::renderClothesForPick(QOpenGLShaderProgramPtr & shader) const
+{
+	cloth_handler_->transform_cloth(transform_, cur_cloth_index_);
+	for(size_t i = 0; i < clothes_.size(); ++i)
+	{
+		float fred = float(i) * 10 / 255;
+		QVector4D color(fred, 0.0f, 0.0f, 1.0f);
+		shader->setUniformValue("Color", color);
 		clothes_[i]->cloth_update_buffer();
 		QOpenGLVertexArrayObject::Binder binder( clothes_[i]->vao() );
 		glDrawArrays(GL_TRIANGLES, 0, clothes_[i]->face_count() * 3);
@@ -640,6 +696,20 @@ void Scene::setClothTexture(QString texture_name)
 	int loc = material_->shader()->uniformLocation("Tex1");
 	glfunctions_->glUniform1i(loc, 0);
 	glfunctions_->glActiveTexture( GL_TEXTURE0 );
+}
+
+void Scene::pickCloth(BYTE red, bool hover)
+{
+	int index = red / 10;
+	if(index >= 0 && index < clothes_.size())
+	{
+		if(hover)
+			hover_cloth_index_ = index;
+		else
+			cur_cloth_index_ = index;
+	}
+	else
+		hover_cloth_index_ = -1;
 }
 
 // UIÀà
