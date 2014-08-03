@@ -10,7 +10,7 @@
 #define RAD_TO_DEG 57.2957805
 
 Camera::Camera( QObject* parent /*= 0 */ )
-	: eye_(0.0, 0.0, 1.0f),
+	: eye_(0.0, 1.0, 0.0f),
 	center_(0.0, 0.0, 0.0),
 	distance_exponent_(1200.0f),
 	fovy_(45.0f),
