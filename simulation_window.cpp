@@ -98,14 +98,13 @@ void SimulationWindow::mouseMoveEvent( QMouseEvent *event )
 	{
 		int wid = width(), hei = height();
 		//glViewport( 0, 0, wid, hei );
-		BYTE * data = new BYTE[(wid + 1) * (hei + 1) * 3];
+		BYTE data[3];
 		QPoint pos = event->pos();
 		paintForPick();
 		glReadBuffer(GL_BACK);
-		glReadPixels(0,0,wid,hei,GL_BGR_EXT,GL_UNSIGNED_BYTE,data);
+		glReadPixels(pos.x(),hei - pos.y(),1,1,GL_RGB,GL_UNSIGNED_BYTE,data);
 		glReadBuffer(GL_FRONT);
-		BYTE red = data[((hei - pos.y()) * wid + pos.x()) * 3 + 2];
-		delete[] data;
+		BYTE red = data[0];
 		bool hover = true;
 		if(event->buttons() & Qt::LeftButton)
 			hover = false;

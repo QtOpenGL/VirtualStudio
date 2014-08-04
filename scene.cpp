@@ -183,12 +183,6 @@ void Scene::renderForPick()
 		shader->setUniformValue("NormalMatrix", mv.normalMatrix());
 		shader->setUniformValue("MVP", MVP);  
 		shader->setUniformValue("GPUSkinning", false);
-		shader->setUniformValue("Light2.Direction", /*view_matrix * */QVector4D(0.0f, -1.0f, 0.0f, 0.0f));
-		shader->setUniformValue("Light2.Intensity", QVector3D(1.0f, 1.0f, 1.0f));
-		shader->setUniformValue("Material.Ka", QVector3D( 0.5f, 0.5f, 0.5f ));
-		shader->setUniformValue("Material.Kd", QVector3D( 0.5f, 0.5f, 0.5f ));
-		shader->setUniformValue("Material.Ks", QVector3D( 0.0f, 0.0f, 0.0f ));
-		shader->setUniformValue("Material.Shininess", 10.0f);
 
 		renderClothesForPick(shader);
 		reset_transform();
