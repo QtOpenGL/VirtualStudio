@@ -141,6 +141,7 @@ void SimulationWindow::mouseMoveEvent( QMouseEvent *event )
 		default: 
 			break;
 		}
+		prev_pos_ = cur_pos_;
 	}
 
 	QWindow::mouseMoveEvent(event);
