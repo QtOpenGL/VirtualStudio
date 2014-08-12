@@ -87,6 +87,21 @@ void SimulationWindow::mousePressEvent( QMouseEvent *event )
 {
 	if (event->button() == Qt::LeftButton) {
 		cur_pos_ = prev_pos_ = event->pos();
+
+		if(scene_->is_clothLoaded())
+		{
+			int wid = width(), hei = height();
+			//glViewport( 0, 0, wid, hei );
+			BYTE data[3];
+			QPoint pos = event->pos();
+			paintForPick();
+			glReadBuffer(GL_BACK);
+			glReadPixels(pos.x(),hei - pos.y(),1,1,GL_RGB,GL_UNSIGNED_BYTE,data);
+			glReadBuffer(GL_FRONT);
+			BYTE red = data[0];
+			scene_->pickCloth(red, false);
+			paintGL();
+		}
 	}
 	
 	QWindow::mousePressEvent(event);
@@ -105,10 +120,7 @@ void SimulationWindow::mouseMoveEvent( QMouseEvent *event )
 		glReadPixels(pos.x(),hei - pos.y(),1,1,GL_RGB,GL_UNSIGNED_BYTE,data);
 		glReadBuffer(GL_FRONT);
 		BYTE red = data[0];
-		bool hover = true;
-		if(event->buttons() & Qt::LeftButton)
-			hover = false;
-		scene_->pickCloth(red, hover);
+		scene_->pickCloth(red, true);
 		paintGL();
 	}
 
@@ -133,7 +145,7 @@ void SimulationWindow::mouseMoveEvent( QMouseEvent *event )
 			scene_->cloth_rotate(prev_pos_, cur_pos_);
 			break;
 		case Scene::CLOTH_MOVE: 
-			scene_->cloth_move(dx, dy);
+			scene_->cloth_move(-dx, dy);
 			break;
 		case Scene::CLOTH_SCALE: 
 			scene_->cloth_scale(dy);
