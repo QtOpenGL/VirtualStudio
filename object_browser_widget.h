@@ -22,7 +22,7 @@ public:
 private:
 	//QTreeView*	scene_tree_view_;
     SceneGraphTreeWidget* scene_tree_widget;
-	QTableView*	property_table_view_;
+    QTableView*	property_table_view_;
 };
 
 /************************************************************************/
@@ -30,14 +30,14 @@ private:
 /************************************************************************/
 class DesignWidget : public QWidget
 {
-	friend ObjectBrowserWidget;
+    friend ObjectBrowserWidget;
 
 public:
-	DesignWidget(QWidget *parent = 0);
+    DesignWidget(QWidget *parent = 0);
 
 private:
-	QTreeView*	pattern_tree_view_;
-	QTableView*	property_table_view_;
+    QTreeView*	pattern_tree_view_;
+    QTableView*	property_table_view_;
 };
 
 /************************************************************************/

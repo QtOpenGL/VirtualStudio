@@ -36,6 +36,7 @@ private:
 	void createMenusAndToolBars();
 	void createDockWidgets();
 	void createConnections();
+^^^^^^^ HEAD
 	bool okToContinue();
 
 private slots:
@@ -54,6 +55,44 @@ private slots:
 	bool save();
 	void updateAnimation(int);
     void importMocap(QString& , QString&);
+=======
+	//void createRenderingModeMenu(const char *slot, QColor defaultColor);
+	bool okToContinue();
+
+private slots:
+	void fileOpen();
+	void fileSave();
+	void fileSaveAs();
+	// 导入虚拟人物
+	void fileImportAvatar();
+	// 导入服装打板
+	void fileImportPattern();	
+	// 导入OBJ服装，wunf
+	void fileImportCloth();
+	// 显示/隐藏参考网格
+	void toggleGridVisible();	
+
+	void switchToRotateMode();
+	void switchToPanMode();
+	void switchToZoomMode();
+	void switchToClothRotateMode();
+	void switchToClothMoveMode();
+	void switchToClothScaleMode();
+	void switchToSelectMode();
+
+	void renderingModeChanged(int);
+	void startSimulate();
+	bool save();
+	//void updateAnimation(int);
+	void updateSynthesizedAnimation(AnimationClip*, AnimationTrack*);
+
+	void save_cm_file();
+	void open_cm_file();
+
+	void changeClothColor();
+	void changeClothTexture();
+	void toggleRecord();
+>>>>>>> dev
 
 private:
 	// 仿真相关成员
@@ -61,6 +100,7 @@ private:
 
 	// UI相关成员
 	QAction* file_open_action_;
+^^^^^^^ HEAD
 	QAction* file_import_avatar_action_;
 	QAction* file_import_pattern_action_;
 	QAction* file_exit_action_;
@@ -73,6 +113,34 @@ private:
 	QAction* design_showgrid_action_;
     QAction* design_add_seamline_action_;
     QAction* design_generate_cloth_action_;
+=======
+	QAction* file_save_action_;
+	QAction* file_save_as_action_;
+	QAction* file_import_avatar_action_;
+	QAction* file_import_pattern_action_;
+	// 读入OBJ衣服动作，wunf
+	QAction* file_import_cloth_action_;
+	QAction* file_exit_action_;
+	QActionGroup* interaction_group_;
+	QAction* simulation_rotate_action_;
+	QAction* simulation_pan_action_;
+	QAction* simulation_zoom_action_;
+	QAction* simulation_cloth_rotate_action_;
+	QAction* simulation_cloth_move_action_;
+	QAction* simulation_cloth_scale_action_;
+	QActionGroup* shading_group_;
+	QAction* simulation_shading_action_;
+	QAction* simulation_shading_wireframe_action_;
+	QAction* simulation_wireframe_action_;
+	QAction* design_showgrid_action_;
+	QAction* design_change_color_action_;
+	QAction* design_change_texture_action_;
+	QAction* start_simulate_;
+	QAction* save_cm_file_;
+	QAction* open_cm_file_;
+	QAction* reset_;
+	QAction* record_action_;
+>>>>>>> dev
 
 	QMenu* file_menu_;
 	QMenu* window_menu_;
@@ -94,6 +162,14 @@ private:
 	QDockWidget*			object_browser_dock_widget_;
 	QDockWidget*			animation_editor_dock_widget_;
 	QPrinter*				printer_;
+^^^^^^^ HEAD
+=======
+
+	QString avatar_file_;
+	QString obj_cloth_file_;
+	QString cloth_motion_file_;
+	QString project_file_;
+>>>>>>> dev
 };
 
 #endif // MAINWINDOW_H

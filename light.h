@@ -1,10 +1,10 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
+#include "scene_node.h"
+#include <QObject>
 #include <QColor>
 #include <QVector3D>
-
-#include "scene_node.h"
 
 enum LightType
 {
@@ -14,8 +14,6 @@ enum LightType
 	LIGHTTYPE_SPOT
 };
 
-/************************************************************************/
-/* นโิด                                                                 */
 /************************************************************************/
 class Light : public SceneNode
 {

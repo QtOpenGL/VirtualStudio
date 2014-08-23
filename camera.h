@@ -35,8 +35,10 @@ public:
 
     QMatrix4x4 viewMatrix();
     QMatrix4x4 projectionMatrix();
+    QVector3D getViewDirection();
 
     void rotate(const QPoint& prevPos, const QPoint& curPos);
+    QQuaternion rotateForCloth(const QPoint& prevPos, const QPoint& curPos);
     void pan(float dx, float dy);
     void zoom(float factor);  
 
@@ -55,6 +57,8 @@ private:
     float fovy_;
     float near_;
     float far_;
-};
+/*
+ * An arcball camera
+*/
 
 #endif // CAMERA_H

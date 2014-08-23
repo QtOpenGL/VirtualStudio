@@ -1,0 +1,79 @@
+class Animation:
+    remove constructor Animation(const Animation* anim/*, int offset = 0*/, double weight = 1.0);	// offset单位毫秒
+    change interfase
+	void addKeyframes(const ChannelList& cl, int offset, int length, double weight);	// 添加关键帧 偏移时间单位毫秒
+	--->
+	void addKeyframes(const ChannelList& cl, int start_time, int length, double ticks_per_sec, double play_speed, double weight);	// 添加关键帧 起始时间：单位毫秒
+    change number name
+	duration ---> ticks
+    change name
+	AnimationList ---> AnimList
+
+class AnimationClip:
+    remove friend method startLaterThan
+    change constructor
+	AnimationClip(QGraphicsScene *scene, Animation* anim, AnimationTrack* track);
+	--->
+	AnimationClip(QMenu* contex_menu, QGraphicsScene *scene, Animation* anim, AnimationTrack* track, int x, int y);
+    remove interface
+        weight setWeight width
+    change interface 
+        channels ---> channelList
+    remove method
+        int roundness(double size) const;	// 圆角率
+    remove data member
+        int start_time_;// 起始时刻 单位毫秒
+        double weight_;// 混合权重	
+    remove name
+	typedef QList<AnimationClip> AnimationClipList;
+	
+class AnimationTrack:
+    change default constructor
+	AnimationTrack() : locked_(false), visible_(true), weight_(1.0) {}
+	--->	
+	AnimationTrack(AnimationTrackScene* track_edit) 
+    remove member
+	QList< QPair<int, int> > vacant_sections_;// 空闲区间 用于防止区间重叠
+    remove name	
+	typedef QList<AnimationTrack> AnimationTrackList;
+
+class SkeletonModel ---> SkeletonTreeModel
+remove name
+    // aiNode映射到joint
+    typedef std::map<const aiNode*, Joint*> NodeToJointMap;
+
+    // Name映射到aiNode
+    typedef std::map<QString, const aiNode*> NameToNodeMap;
+
+    // Name映射到joint
+    typedef std::map<QString, Joint*> NameToJointMap;
+
+    
+class Avatar
+    change method    
+	animationModel ---> animationTableModel
+	const SkeletonModel* skeletonModel() const			{ return skeleton_model_; }
+	--->
+	const SkeletonTreeModel* skeletonTreeModel() const;
+    change member
+	animation_model_ ---> animation_table_model_
+	skeleton_model_ ---> skeleton_tree_model_
+
+struct Skin:
+    bindpose_pos ---> positions
+    bindpose_norm ---> normals
+
+class AnimationTrackScene:
+    change default constructor
+	AnimationTrackScene(QObject *parent = 0);
+	--->
+	AnimationTrackScene( RemixerWidget* remixer, QObject *parent = 0 );
+    change member
+	current_frame_ ---> cur_frame_
+    change member type
+	QList<AnimationTrack>			tracks_;			// 各动画轨道 保证至少有一个动画轨道
+	--->
+	QList<AnimationTrack*>  tracks_;			    // 动画轨道
+	
+
+remove class AnimationTrackTableModel

@@ -27,6 +27,7 @@
         <file>images/cross.png</file>
         <file>images/bindpose.png</file>
         <file>images/showgrid.png</file>
+<<<<<<< HEAD
         <file>images/skeleton.png</file>
         <file>images/x_ray.png</file>
         <file>images/floortile.ppm</file>
@@ -41,5 +42,22 @@
         <file>shaders/simple.vert</file>
         <file>shaders/skinning.vert</file>
         <file>config/jointMap.cfg</file>
+=======
+        <file>shaders/phong.frag</file>
+        <file>shaders/phong.vert</file>
+        <file>images/wood.png</file>
+        <file>images/skeleton.png</file>
+        <file>images/x_ray.png</file>
+        <file>shaders/lbs.vert</file>
+        <file>images/clothpan.png</file>
+        <file>images/clothrotate.png</file>
+        <file>images/clothwireframe.png</file>
+        <file>images/clothzoom.png</file>
+        <file>images/clothmotion.png</file>
+        <file>images/saveclothmotion.png</file>
+        <file>images/graphics.png</file>
+        <file>images/saveas.png</file>
+        <file>images/simulate.png</file>
+>>>>>>> dev
     </qresource>
 </RCC>

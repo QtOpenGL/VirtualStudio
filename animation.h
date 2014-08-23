@@ -1,7 +1,7 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
-//#include <tuple>
+#include <map>
 
 #include <QMatrix4x4>
 #include <QPair>
@@ -47,14 +47,14 @@
 /************************************************************************/
 struct Joint : public SceneNode
 {
-	QString name;						// 关节名称
-	Joint* parent;						// 父关节
-	QVector<Joint*> children;			// 子关节
-	QMatrix4x4 inverse_bindpose_matrix;	// 从mesh space到bone space (bind pose)之变换矩阵
-	QMatrix4x4 local_transform;			// 相对于父关节的变换
-	QMatrix4x4 global_transform;		// 在世界空间中的变换(由根关节累积至此得来)
-	int channel_index;					// 动画通道索引
-	int index;                          // 索引 用于indexed GPU skinning
+    QString name;						// 关节名称
+    Joint* parent;						// 父关节
+    QVector<Joint*> children;			// 子关节
+    QMatrix4x4 inverse_bindpose_matrix;	// 从mesh space到bone space (bind pose)之变换矩阵
+    QMatrix4x4 local_transform;			// 相对于父关节的变换
+    QMatrix4x4 global_transform;		// 在世界空间中的变换(由根关节累积至此得来)
+    int channel_index;					// 动画通道索引
+    int index;                          // 索引 用于indexed GPU skinning
 
     uint dof;
     // DOF约束 (旋转角度范围)
@@ -62,19 +62,19 @@ struct Joint : public SceneNode
     double min_ry, max_ry;  // Y
     double min_rz, max_rz;  // Z
 
-	explicit Joint(const char* sName) 
-		: name(sName), 
-        parent(nullptr), 
-        channel_index(-1), 
-        dof(DOF_NONE),
-        index(-1)	
-	{}
+    explicit Joint(const char* sName) 
+	: name(sName), 
+    parent(nullptr), 
+    channel_index(-1), 
+    dof(DOF_NONE),
+    index(-1)	
+    {}
 
-	~Joint() 
-	{
-		qDeleteAll(children.begin(), children.end());
-		children.clear();
-	}
+    ~Joint() 
+    {
+	qDeleteAll(children.begin(), children.end());
+	children.clear();
+    }
 
     QVector4D pos() const
     {
@@ -121,13 +121,14 @@ struct DualQuaternion
 
 DualQuaternion quatTransToUnitDualQuaternion(const QQuaternion& q0, const QVector3D& t);
 QQuaternion matToQuat(const QMatrix4x4& mat); // convert an orthogonal matrix to unit quaternion
+
 /************************************************************************/
 /* 旋转值                                                               */
 /************************************************************************/
 struct QuaternionKey 
 {
-	double time;// 单位毫秒
-	QQuaternion value;
+    double time;// 单位毫秒
+    QQuaternion value;
 };
 
 bool quatKeyCmp(const QuaternionKey& key1, const QuaternionKey& k2);
@@ -137,8 +138,8 @@ bool quatKeyCmp(const QuaternionKey& key1, const QuaternionKey& k2);
 // 
 struct VectorKey 
 {
-	double time;// 单位毫秒
-	QVector3D value;
+    double time;// 单位毫秒
+    QVector3D value;
 };
 
 bool vecKeyCmp(const VectorKey& key1, const VectorKey& key2);
@@ -156,16 +157,17 @@ void aiVecKeyToVecKey(VectorKey& qkey, const aiVectorKey& akey);
 /************************************************************************/
 struct AnimationChannel 
 {
-	Joint*                  joint;
-	QVector<VectorKey>		position_keys;
-	QVector<QuaternionKey>	rotation_keys;
-	QVector<VectorKey>		scaling_keys;
+    Joint*                  joint;
+    QVector<VectorKey>		position_keys;
+    QVector<QuaternionKey>	rotation_keys;
+    QVector<VectorKey>		scaling_keys;
 
-	AnimationChannel(Joint* j = nullptr)
-        : joint(j)
+    AnimationChannel() {}
+    AnimationChannel(Joint* j = nullptr)
+	: joint(j)
     {}
 
-	AnimationChannel(const aiNodeAnim* pNodeAnim);
+    AnimationChannel(const aiNodeAnim* pNodeAnim);
 };
 typedef QVector<AnimationChannel> ChannelList;
 
@@ -174,7 +176,7 @@ typedef QVector<AnimationChannel> ChannelList;
 /************************************************************************/
 struct VertexInfo 
 {
-	QVector<QPair<Joint*, float> > joint_weights;
+    QVector<QPair<Joint*, float> > joint_weights;
 };
 typedef QVector<VertexInfo> SkinInfo;
 
@@ -186,31 +188,44 @@ class QOpenGLVertexArrayObject;
 /************************************************************************/
 struct Skin 
 {
-	enum { MAX_NUM_WEIGHTS = 4 };   // 每个顶点最多受四个关节影响
+    enum { MAX_NUM_WEIGHTS = 4 };   // 每个顶点最多受四个关节影响
 
-	SkinInfo		    skininfo;	// 蒙皮信息
-	QVector<QVector3D>	positions;	// 绑定姿态位置
-	QVector<QVector3D>  normals;    // 绑定姿态法线
-	QVector<QVector2D>	texcoords;
-	QVector<uint>		indices;
+    SkinInfo		    skininfo;	// 蒙皮信息
+    QVector<QVector3D>	positions;	// 绑定姿态位置
+    QVector<QVector3D>  normals;    // 绑定姿态法线
+    QVector<QVector2D>	texcoords;
+    QVector<uint>		indices;
 
-	QVector<QVector4D>  joint_indices_; // 四个关节索引依次存储于x y z w
-	QVector<QVector4D>  joint_weights_; // 四个关节权重依次存储于x y z w
-	uint			    texid;
-	uint			    num_triangles;
+//=======
+    // 旧版本数据名称，吴宁枫添加了shrinked为了解决绑定姿态太大的问题
+    QVector<QVector3D>	bindpose_pos;	// 绑定姿态位置
+    QVector<QVector3D>	bindpose_shrinked;	// 绑定姿态位置
+    QVector<QVector3D>  bindpose_norm;  // 绑定姿态法线
 
-	// VBO indexing rendering
-	QOpenGLBuffer*	position_buffer_;
-	QOpenGLBuffer*	normal_buffer_;
-	QOpenGLBuffer*	texcoords_buffer_;
-	QOpenGLBuffer*	index_buffer_;
+	// 当前姿态
+    //QVector<QVector3D>	positions;	
+    //QVector<QVector3D>	normals;
+    //QVector<QVector2D>	texcoords;
+    //QVector<uint>		indices;
+//>>>>>>> dev
+    
+    QVector<QVector4D>  joint_indices_; // 四个关节索引依次存储于x y z w
+    QVector<QVector4D>  joint_weights_; // 四个关节权重依次存储于x y z w
+    uint			    texid;
+    uint			    num_triangles;
 
-	// 用于GPU skinning
-	QOpenGLBuffer*  joint_weights_buffer_; // 关节权重VBO
-	QOpenGLBuffer*  joint_indices_buffer_; // 关节索引VBO
+    // VBO indexing rendering
+    QOpenGLBuffer*	position_buffer_;
+    QOpenGLBuffer*	normal_buffer_;
+    QOpenGLBuffer*	texcoords_buffer_;
+    QOpenGLBuffer*	index_buffer_;
 
-	// VAO
-	QOpenGLVertexArrayObject* vao_;
+    // 用于GPU skinning
+    QOpenGLBuffer*  joint_weights_buffer_; // 关节权重VBO
+    QOpenGLBuffer*  joint_indices_buffer_; // 关节索引VBO
+
+    // VAO
+    QOpenGLVertexArrayObject* vao_;
 };
 typedef QVector<Skin> SkinList;
 
@@ -232,17 +247,17 @@ public:
     {
     }
 
-	Animation(const aiAnimation* pAnimation, Avatar* luke);	// 卢克，快使用原力 注释就不能有趣点么
+    Animation(const aiAnimation* pAnimation, Avatar* luke);	// 卢克，快使用原力 注释就不能有趣点么
 
-	void addKeyframes(const ChannelList& cl, int start_time, int length, double ticks_per_sec, double play_speed, double weight);	// 添加关键帧 起始时间：单位毫秒
+    void addKeyframes(const ChannelList& cl, int start_time, int length, double ticks_per_sec, double play_speed, double weight);	// 添加关键帧 起始时间：单位毫秒
     void clear();   // 清空数据
 
-	const aiAnimation*	ai_anim;	// 原始ASSIMP动画	
+    const aiAnimation*	ai_anim;	// 原始ASSIMP动画	
     Avatar*				avatar;		// 所属Avatar
-	QString				name;		// 名称
-	double				ticks_per_second;        // 节拍每秒
+    QString				name;		// 名称
+    double				ticks_per_second;        // 节拍每秒
     double              ticks;      // 节拍数
-	ChannelList			channels;	// 动画通道 关键帧数据
+    ChannelList			channels;	// 动画通道 关键帧数据
 	
 };
 typedef QList<Animation> AnimList;
@@ -254,14 +269,14 @@ class AnimationTrack;
 class AnimationClip : public QGraphicsObject
 {
     friend AnimationTrack;
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum { SECOND_WIDTH = 100 }; // 每一秒对应宽度为100像素
+    enum { SECOND_WIDTH = 100 }; // 每一秒对应宽度为100像素
     enum { SAMPLE_SLICE = 16 };	 // 采样时间片16ms
-	enum { Type = UserType + 1 };
+    enum { Type = UserType + 1 };
 
-	AnimationClip(QMenu* contex_menu, QGraphicsScene *scene, Animation* anim, AnimationTrack* track, int x, int y);
+    AnimationClip(QMenu* contex_menu, QGraphicsScene *scene, Animation* anim, AnimationTrack* track, int x, int y);
 
     void setPos( qreal x, qreal y );
     void moveBy(qreal dx, qreal dy);
@@ -271,7 +286,7 @@ public:
     void putForwardBy(int t);    // 提前
     
     int type() const;
-	Avatar* avatar() const;
+    Avatar* avatar() const;
     AnimationTrack* track();
     int startTime() const;
     int length() const;
@@ -284,20 +299,29 @@ public:
 // signals:
 //     void clipMoved();
 
+// 旧的接口和数据，在新版本中没有使用
+    double weight() const { return weight_; }
+    void setWeight(double w) { weight_ = w; }
+    qreal width() const { return boundingRect().width(); }
+    Animation* animation() const { return animation_; }
+signals:
+    void clipMoved(AnimationClip*, AnimationTrack* track){} // clip移动了 要检测该clip与其他clip区间有无重叠 可能需要修改AnimationTrackScene的end_frame
+    double			weight_;	// 混合权重
+
 protected:
-	QRectF boundingRect() const;
+    QRectF boundingRect() const;
     QPainterPath shape() const;
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
 private:		
     QGraphicsScene* scene_;
     Animation*		animation_;	// 原始动画	
-	AnimationTrack* track_;		// 所属轨道
-	QString			name_;		// 片段名称
-	int				length_;	// 片段长度 单位毫秒
-	int				y_pos_;		// 中心点y位置 用于将片断锁定在轨道上
+    AnimationTrack* track_;		// 所属轨道
+    QString			name_;		// 片段名称
+    int				length_;	// 片段长度 单位毫秒
+    int				y_pos_;		// 中心点y位置 用于将片断锁定在轨道上
     qreal           delta_;     // 片段移动偏差 delta < 0 左移 delta > 0 右移
     QMenu*          context_menu_;
 };
@@ -315,38 +339,37 @@ public:
     enum { TRACK_HEIGHT = 30 };		// 轨道高度30像素
     enum { OVERLAP_TOLERANCE = 30 };// 判断片段是否重叠的误差限 30ms
 
-	AnimationTrack(AnimationTrackScene* track_edit) 
-        : track_edit_(track_edit), 
-        locked_(false), 
-        visible_(true), 
-        weight_(1.0) 
-    {
-    }
-
+    AnimationTrack(AnimationTrackScene* track_edit) 
+	: track_edit_(track_edit), 
+	locked_(false), 
+	visible_(true), 
+	weight_(1.0) 
+    { }
     ~AnimationTrack();
-
-	bool isEmpty() const;
+    bool isEmpty() const;
     int endTime() const;
-	void addClip(AnimationClip* clip);
+    void addClip(AnimationClip* clip);
     void delClip(AnimationClip* clip);
     void resolveOverlap(AnimationClip* clip);  // 重新调整片段位置 避免重叠
-
     void moveUp();
     void moveDown();
-
 signals:
     void clipMoved();
+
+// 旧接口和数据，新版本没有使用
+    void addSection(int start, int end) { vacant_sections_.push_back(qMakePair(start, end)); }
+    void addClip(AnimationClip* clip);
 
 private:
     void move(int dist);
 
 private:
     AnimationTrackScene*    track_edit_;    // 轨道编辑区    
-	QList<AnimationClip*>   clips_;         // 动画片段
+    QList<AnimationClip*>   clips_;         // 动画片段
 
-	bool locked_;   // 是否锁定（锁定的轨道不允许编辑）
-	bool visible_;  // 是否可见（可见的轨道动画才能播放）
-	double weight_; // 权重
+    bool locked_;   // 是否锁定（锁定的轨道不允许编辑）
+    bool visible_;  // 是否可见（可见的轨道动画才能播放）
+    double weight_; // 权重
 };
 // typedef QList<AnimationTrack> TrackList;
 
@@ -470,54 +493,69 @@ class Scene;
 /************************************************************************/
 class Avatar : public SceneNode
 {
-	friend Scene;
+    friend Scene;
+
 public:
-	Avatar(const aiScene* pScene, const QString& filename);
-	~Avatar();
+    Avatar(const aiScene* pScene, const QString& filename);
+    ~Avatar();
 
-	Joint* finddJointByName(const QString& name) const;
-	void updateAnimation(const Animation* animation, int elapsed_time);
-	//void skinning();	     已废除 目前完全采用GPU蒙皮                                       
+    Joint* finddJointByName(const QString& name) const;
+    void updateAnimation(const Animation* animation, int elapsed_time);
+    void skinning();	     //已废除 目前完全采用GPU蒙皮 吴宁枫：需要重新采用，为了人物服装顶点碰撞                                      
 
-	bool hasAnimations() const;
-	bool hasMaterials() const;
-	const SkinList& skins() const;
+    bool hasAnimations() const;
+    bool hasMaterials() const;
+    const SkinList& skins() const;
 	
-	const AnimationTableModel* animationTableModel() const;
-	const SkeletonTreeModel* skeletonTreeModel() const;
+    const AnimationTableModel* animationTableModel() const;
+    const SkeletonTreeModel* skeletonTreeModel() const;
 
-	bool bindposed() const;
-	void setBindposed(bool val);
+// 吴宁枫添加的蒙皮测试
+    void skinningtest();
+    void skinningtest2();
+// 用来CPU蒙皮
+    QVector<QMatrix4x4>& jointMatrices() { return joint_matrices_; }
+
+	
+    bool bindposed() const;
+    void setBindposed(bool val);
 
     void importMocap(QString& asf, QString& amc);
     void addAnimation(const Animation& anim);
     //void addAnimations(const AnimList& anims);
 
 private:
-	Joint* buildSkeleton(aiNode* pNode, Joint* pParent);							// 构造骨架	
-	void calcGlobalTransform(Joint* pJoint);										// 计算关节全局变换	
-	void updateTransforms(Joint* pJoint, const QVector<QMatrix4x4>& vTransforms);	// 对各关节实施变换
-	void updateJointMatrices();                                                     // 更新matrix palette
+    Joint* buildSkeleton(aiNode* pNode, Joint* pParent);							// 构造骨架	
+    void calcGlobalTransform(Joint* pJoint);										// 计算关节全局变换	
+    void updateTransforms(Joint* pJoint, const QVector<QMatrix4x4>& vTransforms);	// 对各关节实施变换
+    void updateJointMatrices();                                                     // 更新matrix palette
     void updateJointDualQuaternions();                                              // 更新双四元数
     void updateSkeletonVBO();                                                       // 更新关节和骨骼VBO
-	void makeAnimationCache();														// 缓存由ASSIMP加载的动画	
-	void makeSkinCache();															// 缓存蒙皮	
+    void makeAnimationCache();														// 缓存由ASSIMP加载的动画	
+    void makeSkinCache();															// 缓存蒙皮	
     void createBoundings();                                                         // 构造包围盒
     void buildNameAnimationMap();		                                            // 建立名称-动画映射表
     void buildNameChannelIndexMap();                                                // 建立名称-通道索引映射表
-	void loadDiffuseTexture();
-	bool createSkinVBO();
+    void loadDiffuseTexture();
+    bool createSkinVBO();
     bool createSkeletonVBO();
     bool loadMH2CMUJointMap();
+// 吴宁枫添加的蒙皮测试
+    void makeSkinCacheTest();
+    void makeSkinCacheTest2();
 
-	const aiScene*			ai_scene_;	    // ASSIMP场景
-	Joint*					root_;			// 根关节
-	QVector<Joint*>			joints_;		// 所有关节
-	AnimList			    animations_;	// 关键帧
-	QVector<QMatrix4x4>		transforms_;    // 各个关节的局部变换
-	QVector<QMatrix4x4>		joint_matrices_;// matrix palette(关节全局变换 * 逆绑定姿态矩阵)
+// 旧接口
+    void loadDiffuseTexture();
+    bool createVertexBuffers();
+
+    const aiScene*			ai_scene_;	    // ASSIMP场景
+    Joint*					root_;			// 根关节
+    QVector<Joint*>			joints_;		// 所有关节
+    AnimList			    animations_;	// 关键帧
+    QVector<QMatrix4x4>		transforms_;    // 各个关节的局部变换
+    QVector<QMatrix4x4>		joint_matrices_;// matrix palette(关节全局变换 * 逆绑定姿态矩阵)
     QVector<QVector4D>      joint_dual_quaternions_;    // 双四元数
-	SkinList				skins_;			// 蒙皮
+    SkinList				skins_;			// 蒙皮
 
     QVector<Bone*>              bones_;
     QVector<QVector4D>          joint_positions_;
@@ -529,30 +567,36 @@ private:
     QVector<OBB>                bounding_obbs_; // 包围盒 与各子蒙皮一一对应
     AABB                        bounding_aabb_; // 整体包围盒
 
-	bool	has_materials_;	// 是否有材质纹理
-	bool    has_animations_;// 是否有动画
-	//bool    gpu_skinning_;  // 是否采用GPU蒙皮 已废除 始终采用GPU蒙皮
-	bool    bindposed_;     // 是否处于绑定姿态
-	QString	file_dir_;		// 模型文件目录
+    bool	has_materials_;	// 是否有材质纹理
+    bool    has_animations_;// 是否有动画
+    bool    gpu_skinning_;  // 是否采用GPU蒙皮 已废除 始终采用GPU蒙皮 吴宁枫重新恢复，算法需要CPU蒙皮
+    bool    bindposed_;     // 是否处于绑定姿态
+    QString	file_dir_;		// 模型文件目录
 
 	//std::vector<std::tuple<uint, uint, uint> > last_playheads_;	// 记录上一次播放的关键帧位置
 
-	NodeToJointMap	node_joint_;
-	NameToNodeMap	name_node_;
-	NameToJointMap	name_joint_;
+    NodeToJointMap	node_joint_;
+    NameToNodeMap	name_node_;
+    NameToJointMap	name_joint_;
     NameToAnimMap	name_animation_;		// 名称-动画映射表
     NameToChIdMap   name_channelindex_;     // 名称-通道索引映射表
-	QString			diffuse_tex_path_;
+    QString			diffuse_tex_path_;
 
 	// UI成员
-	AnimationTableModel*	animation_table_model_;
-	SkeletonTreeModel*		skeleton_tree_model_;
+    AnimationTableModel*	animation_table_model_;
+    SkeletonTreeModel*		skeleton_tree_model_;
 
     //----------------------
     // 动作捕捉数据导入
     QMap<QString, QString>  mh2cmu_joint_map_;  // makehuman --> cmu mocap关节名称映射表
     QMap<QString, int>      mh2cmu_channel_map_;
     ASFAMCImporter*         asfamc_importer_;
+
+// 一些旧的数据成员
+    double scale_factor_;
+    double xtranslate_;
+    double ytranslate_;
+    double ztranslate_;
 };
 
 #endif //ANIMATION_H

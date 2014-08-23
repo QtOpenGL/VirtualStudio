@@ -141,7 +141,6 @@ public:
     ~PatternScene();
 
 	bool importPattern(const QString& filename);	// 导入服装打板
-		
 	bool gridVisible() const { return grid_visible_; }
 	QColor panelColor() const { return panel_color_; }
 	QColor seamlineColor() const { return seamline_color_; }

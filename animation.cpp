@@ -1,7 +1,7 @@
 #include "animation.h"
 
 #include <cmath>
-
+#include <fstream>
 #include <QFileInfo>
 #include <QMimeData>
 #include <QtGui>
@@ -284,6 +284,96 @@ void Animation::clear()
     ticks = 0.0;
     ticks_per_second = 0.0;
     channels.clear();
+=======
+	duration(pAnimation->mDuration), ticks_per_second(pAnimation->mTicksPerSecond), avatar(luke)
+{
+	for (uint channel_index = 0; channel_index < pAnimation->mNumChannels; ++channel_index) {
+		const aiNodeAnim* pNodeAnim = pAnimation->mChannels[channel_index];
+		AnimationChannel new_channel(pNodeAnim);
+		QString joint_name(pNodeAnim->mNodeName.C_Str());
+		new_channel.joint = luke->finddJointByName(joint_name);
+		channels.push_back(new_channel);
+	}
+}
+
+Animation::Animation( const Animation* anim/*, int offset*/ /*= 0*/, double weight /*= 1.0 */ ) 
+	: ai_anim(anim->ai_anim), name(anim->name), duration(anim->duration), channels(anim->channels), ticks_per_second(anim->ticks_per_second), avatar(anim->avatar)
+{
+	//double offset_ticks = offset * 0.001 * ticks_per_second;
+	for(int channel_index = 0; channel_index < channels.size(); ++channel_index) {
+		AnimationChannel& channel = channels[channel_index];
+		for (int key_index = 0; key_index < channel.position_keys.size(); ++key_index) {
+			//channel.position_keys[key_index].time += offset_ticks;
+			channel.position_keys[key_index].value *= weight;
+		}
+
+		for (int key_index = 0; key_index < channel.rotation_keys.size(); ++key_index) {
+			//channel.rotation_keys[key_index].time += offset_ticks;
+			channel.rotation_keys[key_index].value *= weight;
+		}
+
+		for (int key_index = 0; key_index < channel.scaling_keys.size(); ++key_index) {
+			//channel.scaling_keys[key_index].time += offset_ticks;
+			channel.scaling_keys[key_index].value *= weight;
+		}
+	}
+}
+
+// Animation& Animation::operator=( const Animation& anim )
+// {
+// 	if (this != &anim) {
+// 		ai_anim = anim.ai_anim;
+// 		name = anim.name;
+// 		duration = anim.duration;
+// 		tps = anim.tps;
+// 		avatar = anim.avatar;
+// 		weight = anim.weight;
+// 		channels.clear();
+// 	}
+// 	return *(this);
+// }
+
+void Animation::addKeyframes( const ChannelList& cl, int offset, int length, double weight )
+{
+	// 效率有待改进
+	double offset_ticks = offset * 0.001 * ticks_per_second;
+	for(int channel_index = 0; channel_index < cl.size(); ++channel_index) {
+		// 找到对应的通道 优化时可考虑用Hashtable加速
+		auto it = channels.begin();
+		while (it != channels.end()) {
+			if (it->joint->name == cl[channel_index].joint->name) {
+				break;
+			}
+			++it;
+		}
+
+		Q_ASSERT(it != channels.end());
+		// 平移
+		for (int key_index = 0; key_index < cl[channel_index].position_keys.size(); ++key_index) {
+			VectorKey key = cl[channel_index].position_keys[key_index];
+			key.time += offset_ticks;// 单位转换毫秒-->节拍
+			key.value *= weight;
+			it->position_keys.push_back(key);
+		}
+		// 旋转
+		for (int key_index = 0; key_index < cl[channel_index].rotation_keys.size(); ++key_index) {
+			QuaternionKey key = cl[channel_index].rotation_keys[key_index];
+			key.time += offset_ticks;
+			key.value *= weight;
+			it->rotation_keys.push_back(key);
+		}
+		// 缩放
+		for (int key_index = 0; key_index < cl[channel_index].scaling_keys.size(); ++key_index) {
+			VectorKey key = cl[channel_index].scaling_keys[key_index];
+			key.time += offset_ticks;
+			key.value *= weight;
+			it->scaling_keys.push_back(key);
+		}
+	}
+
+	double tmp = (offset + length) * 0.001 * ticks_per_second;
+	duration = qMax(duration, tmp);
+>>>>>>> dev
 }
 
 /************************************************************************/
@@ -461,6 +551,11 @@ void AnimationClip::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 int AnimationClip::type() const
 {
     return Type;
+}
+
+bool startLaterThan(const AnimationClip* lhs, const AnimationClip* rhs)
+{
+    return lhs->start_time_ < rhs->start_time_;
 }
 
 /************************************************************************/
@@ -789,7 +884,8 @@ Avatar::Avatar(const aiScene* pScene, const QString& filename)
     bindposed_( true ),
     //gpu_skinning_(true),
     file_dir_(QFileInfo(filename).absolutePath()),
-    asfamc_importer_(nullptr)
+    asfamc_importer_(nullptr),
+    gpu_skinning_(false)
 {
     // 从ASSIMP读取的数据中抽取骨骼，构造骨架
     for (uint mesh_index = 0; mesh_index < pScene->mNumMeshes; ++mesh_index) 
@@ -1201,47 +1297,47 @@ void Avatar::createBoundings()
     bounding_aabb_.pt_max = pt_max;
 }
 
-// void Avatar::skinning()
-// {
-//     if (gpu_skinning_) 
-//     {
-//         // transform feedback
-//     }
-//     else 
-//     {
-//         for (auto skin_it = skins_.begin(); skin_it != skins_.end(); ++skin_it) 
-//         {
-//             for (int info_index = 0; info_index < skin_it->skininfo.size(); ++info_index) 
-//             {
-//                 VertexInfo& info = skin_it->skininfo[info_index];
-//                 QVector4D position;
-//                 QVector4D normal;
-// 
-//                 for (auto jw_it = info.joint_weights.begin(); jw_it != info.joint_weights.end(); ++jw_it) 
-//                 {
-//                     Joint* joint = jw_it->first;
-//                     float weight = jw_it->second;
-// 
-//                     QMatrix4x4 transform;
-//                     transform = joint->global_transform * joint->inverse_bindpose_matrix;
-//                     QVector4D pos(skin_it->bindpose_pos[info_index], 1.0);
-//                     position += transform * pos * weight;
-//                     // 法线变换
-//                     QVector4D norm(skin_it->bindpose_norm[info_index]);
-//                     normal += transform * norm * weight;
-//                 }
-// 
-//                 skin_it->positions[info_index].setX(position.x());
-//                 skin_it->positions[info_index].setY(position.y());
-//                 skin_it->positions[info_index].setZ(position.z());
-// 
-//                 skin_it->normals[info_index].setX(normal.x());
-//                 skin_it->normals[info_index].setY(normal.y());
-//                 skin_it->normals[info_index].setZ(normal.z());
-//             }
-//         }
-//     }
-// }
+ void Avatar::skinning()
+ {
+     if (gpu_skinning_) 
+     {
+         // transform feedback
+     }
+     else 
+     {
+         for (auto skin_it = skins_.begin(); skin_it != skins_.end(); ++skin_it) 
+         {
+             for (int info_index = 0; info_index < skin_it->skininfo.size(); ++info_index) 
+             {
+                 VertexInfo& info = skin_it->skininfo[info_index];
+                 QVector4D position;
+                 QVector4D normal;
+ 
+                 for (auto jw_it = info.joint_weights.begin(); jw_it != info.joint_weights.end(); ++jw_it) 
+                 {
+                     Joint* joint = jw_it->first;
+                     float weight = jw_it->second;
+ 
+                     QMatrix4x4 transform;
+                     transform = joint->global_transform * joint->inverse_bindpose_matrix;
+                     QVector4D pos(skin_it->bindpose_pos[info_index], 1.0);
+                     position += transform * pos * weight;
+                     // 法线变换
+                     QVector4D norm(skin_it->bindpose_norm[info_index]);
+                     normal += transform * norm * weight;
+                 }
+ 
+                 skin_it->positions[info_index].setX(position.x());
+                 skin_it->positions[info_index].setY(position.y());
+                 skin_it->positions[info_index].setZ(position.z());
+ 
+                 skin_it->normals[info_index].setX(normal.x());
+                 skin_it->normals[info_index].setY(normal.y());
+                 skin_it->normals[info_index].setZ(normal.z());
+             }
+         }
+     }
+ }
 
 Joint* Avatar::finddJointByName( const QString& name ) const
 {
@@ -1402,33 +1498,6 @@ bool Avatar::bindposed() const
 void Avatar::setBindposed(bool val)
 {
     bindposed_ = val;
-    // 根据是否处于绑定姿态 更新VBO
-//     if (bindposed_) 
-//     {
-//         for (auto skin_it = skins_.begin(); skin_it != skins_.end(); ++skin_it) 
-//         {
-//             skin_it->position_buffer_->bind();
-//             skin_it->position_buffer_->allocate(skin_it->bindpose_pos.data(), skin_it->bindpose_pos.size() * sizeof(QVector3D));
-//             skin_it->position_buffer_->release();
-// 
-//             skin_it->normal_buffer_->bind();
-//             skin_it->normal_buffer_->allocate(skin_it->bindpose_norm.data(), skin_it->bindpose_norm.size() * sizeof(QVector3D));
-//             skin_it->normal_buffer_->release();
-//         }
-//     }
-//     else 
-//     {
-//         for (auto skin_it = skins_.begin(); skin_it != skins_.end(); ++skin_it) 
-//         {
-//             skin_it->position_buffer_->bind();
-//             skin_it->position_buffer_->allocate(skin_it->positions.data(), skin_it->positions.size() * sizeof(QVector3D));
-//             skin_it->position_buffer_->release();
-// 
-//             skin_it->normal_buffer_->bind();
-//             skin_it->normal_buffer_->allocate(skin_it->normals.data(), skin_it->normals.size() * sizeof(QVector3D));
-//             skin_it->normal_buffer_->release();
-//         }
-//     }
 }
 
 void Avatar::updateJointMatrices()

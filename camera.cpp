@@ -12,13 +12,14 @@
 
 Camera::Camera( SceneNode* parent /*= 0 */ )
     : SceneNode(),
-    eye_(0.0, 0.0, 0.0f),
+    eye_(0.0, 1.0, 0.0f),
     center_(0.0, 0.0, 0.0),
     distance_exponent_(1200.0f),
     fovy_(45.0f),
     near_(0.1f),
     far_(1000.f)
 {
+	rotation_ = QQuaternion::fromAxisAndAngle(QVector3D(1.f, 0.f, 0.f), -90.f);
 }
 
 QVector3D Camera::screenToBall( const QPoint& pt )
@@ -50,6 +51,7 @@ void Camera::calcRotation( const QVector3D& vFrom, const QVector3D& vTo )
     QQuaternion newRot(fDot, vPart);
     rotation_ = newRot * rotation_;
     rotation_.normalize();
+
 }
 
 void Camera::rotate(const QPoint& prevPos, const QPoint& curPos)
@@ -66,6 +68,25 @@ void Camera::pan( float dx, float dy )
 
     center_.setX(center_.x() - dx);
     center_.setY(center_.y() - dy);
+}
+
+QQuaternion Camera::calcRotationForCloth( const QVector3D& vFrom, const QVector3D& vTo )
+{
+	QVector3D vPart;
+	float fDot = QVector3D::dotProduct(vFrom, vTo);
+	vPart = QVector3D::crossProduct(vFrom, vTo);
+
+	QQuaternion newRot(fDot, vPart);
+	newRot.normalize();
+
+	return newRot;
+}
+
+QQuaternion Camera::rotateForCloth(const QPoint& prevPos, const QPoint& curPos)
+{
+	QVector3D from = screenToBall(prevPos);
+	QVector3D to = screenToBall(curPos);
+	return calcRotationForCloth(from, to);
 }
 
 void Camera::zoom(float factor)
