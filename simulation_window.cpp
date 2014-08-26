@@ -1,137 +1,71 @@
 #include "simulation_window.h"
 
 #include "scene.h"
-^^^^^^^ HEAD
-=======
 #include "AVIGenerator.h"
 #include "animation_editor_widget.h"
->>>>>>> dev
 
 #include <QtGui>
 #include <QtWidgets/QtWidgets>
 #include <QOpenGLShaderProgram>
-^^^^^^^ HEAD
-
-SimulationWindow::SimulationWindow( Scene* scene, QWindow* screen )
-    : QWindow( screen ), 
-	  scene_( scene ),
-      m_leftButtonPressed( false )
-=======
 #include <cassert>
 
 SimulationWindow::SimulationWindow( Scene* scene, QWindow* screen )
-	: QWindow( screen ), 
-	  scene_( scene )
->>>>>>> dev
+    : QWindow( screen ), 
+    scene_( scene ),
+    m_leftButtonPressed( false )
 {	
 	// Tell Qt we will use OpenGL for this window
-	setSurfaceType(OpenGLSurface);
+    setSurfaceType(OpenGLSurface);
 
-	// Specify the format we wish to use
-	QSurfaceFormat format;
-	format.setDepthBufferSize(24);
-^^^^^^^ HEAD
- 	format.setMajorVersion(4);
- 	format.setMinorVersion(0);
-=======
-	format.setMajorVersion(4);
-	format.setMinorVersion(0);
->>>>>>> dev
-	format.setSamples(4);
-	format.setProfile(QSurfaceFormat::CoreProfile);
+    // Specify the format we wish to use
+    QSurfaceFormat format;
+    format.setDepthBufferSize(24);
+    format.setMajorVersion(4);
+    format.setMinorVersion(0);
+    format.setSamples(4);
+    format.setProfile(QSurfaceFormat::CoreProfile);
 	
-	setFormat(format);
-^^^^^^^ HEAD
- 	create();
+    setFormat(format);
+    create();
  
- 	// Create an OpenGL context
- 	context_ = new QOpenGLContext;
- 	context_->setFormat(format);
- 	context_->create();
+    // Create an OpenGL context
+    context_ = new QOpenGLContext;
+    context_->setFormat(format);
+    context_->create();
  
- 	// Setup our scene
-  	context_->makeCurrent(this);
-  	scene_->setContext(context_);
- 	initializeGL();
+    // Setup our scene
+    context_->makeCurrent(this);
+    scene_->setContext(context_);
+    initializeGL();
  
- 	// Make sure we tell OpenGL about new window sizes
- 	connect( this, SIGNAL( widthChanged( int ) ), this, SLOT( resizeGL() ) );
- 	connect( this, SIGNAL( heightChanged( int ) ), this, SLOT( resizeGL() ) );
-=======
-	create();
- 
-	// Create an OpenGL context
-	context_ = new QOpenGLContext;
-	context_->setFormat(format);
-	context_->create();
- 
-	// Setup our scene
-	context_->makeCurrent(this);
-	scene_->setContext(context_);
-	initializeGL();
- 
-	// Make sure we tell OpenGL about new window sizes
-	connect( this, SIGNAL( widthChanged( int ) ), this, SLOT( resizeGL() ) );
-	connect( this, SIGNAL( heightChanged( int ) ), this, SLOT( resizeGL() ) );
->>>>>>> dev
+    // Make sure we tell OpenGL about new window sizes
+    connect( this, SIGNAL( widthChanged( int ) ), this, SLOT( resizeGL() ) );
+    connect( this, SIGNAL( heightChanged( int ) ), this, SLOT( resizeGL() ) );
 }
 
 void SimulationWindow::initializeGL()
 {
-^^^^^^^ HEAD
- 	context_->makeCurrent(this);
- 	scene_->initialize();
-=======
-	context_->makeCurrent(this);
-	scene_->initialize();
->>>>>>> dev
+    context_->makeCurrent(this);
+    scene_->initialize();
 }
 
 void SimulationWindow::resizeGL()
 {
-	context_->makeCurrent(this);
-	scene_->resize(width(), height());
-^^^^^^^ HEAD
+    context_->makeCurrent(this);
+    scene_->resize(width(), height());
     paintGL();
 }
 
 void SimulationWindow::paintGL()
 {
-	//if (isExposed()) 
-    {
-=======
-	paintGL();
-}
+    // Make the context current
+    context_->makeCurrent(this);
 
+    // Do the rendering (to the back buffer)
+    scene_->render();
 
-void SimulationWindow::paintGL()
-{
-	if (isExposed()) {
->>>>>>> dev
-		// Make the context current
-		context_->makeCurrent(this);
-
-		// Do the rendering (to the back buffer)
-		scene_->render();
-
-		// Swap front/back buffers
-		context_->swapBuffers(this);
-	}
-}
-
-^^^^^^^ HEAD
-void SimulationWindow::mousePressEvent( QMouseEvent *event )
-{
-	if (event->button() == Qt::LeftButton) 
-    {
-        m_leftButtonPressed = true;
-		cur_pos_ = prev_pos_ = event->pos();
-
-        if (scene_->interactionMode() == Scene::SELECT)
-            scene_->pick(cur_pos_);
-	}
-    
-	QWindow::mousePressEvent(event);
+    // Swap front/back buffers
+    context_->swapBuffers(this);
 }
 
 void SimulationWindow::mouseReleaseEvent(QMouseEvent* e)
@@ -139,7 +73,8 @@ void SimulationWindow::mouseReleaseEvent(QMouseEvent* e)
     if ( e->button() == Qt::LeftButton )
         m_leftButtonPressed = false;
     QWindow::mouseReleaseEvent( e );
-=======
+}
+
 void SimulationWindow::paintForPick()
 {
 	if (isExposed()) {
@@ -175,31 +110,10 @@ void SimulationWindow::mousePressEvent( QMouseEvent *event )
 	}
 	
 	QWindow::mousePressEvent(event);
->>>>>>> dev
 }
 
 void SimulationWindow::mouseMoveEvent( QMouseEvent *event )
 {
-^^^^^^^ HEAD
-    cur_pos_ = event->pos();
-    float dx = +12.0f * float(cur_pos_.x() - prev_pos_.x()) / width();
-    float dy = -12.0f * float(cur_pos_.y() - prev_pos_.y()) / height();
-
-    if (scene_->interactionMode() != Scene::SELECT)
-    {
-        if (event->buttons() & Qt::LeftButton) 
-        {
-            scene_->rotate(prev_pos_, cur_pos_);
-        }
-        else if (event->buttons() & Qt::RightButton)
-        {
-            scene_->pan(dx, dy);
-        }
-    }
-
-    prev_pos_ = cur_pos_;
-    paintGL();
-=======
 	if(scene_->is_clothLoaded())
 	{
 		int wid = width(), hei = height();
@@ -246,14 +160,12 @@ void SimulationWindow::mouseMoveEvent( QMouseEvent *event )
 		}
 		prev_pos_ = cur_pos_;
 	}
->>>>>>> dev
 
 	QWindow::mouseMoveEvent(event);
 }
 
 void SimulationWindow::wheelEvent( QWheelEvent *event )
 {
-^^^^^^^ HEAD
  	if (event->isAccepted()) 
      {
  		scene_->zoom(event->delta());
@@ -320,35 +232,12 @@ void SimulationWindow::updateAnimation(const Animation* anim, int frame)
 	// 更新Avatar和Cloth动画
 	scene_->updateAvatarAnimation(anim, frame);
     paintGL();
-=======
-	// wheel: zoom
-	if (event->isAccepted()) {
-		scene_->zoom(event->delta());
-		event->accept();
-		paintGL();
-	}
-	QWindow::wheelEvent(event);
-}
-
-void SimulationWindow::updateAnimation(int frame)
-{
-	// 更新Avatar动画
-	scene_->updateAvatarAnimation(frame);
-	// 更新Cloth动画，wunf
-	if(scene_->is_replay())
-		scene_->updateClothAnimation(frame);
-	paintGL();
->>>>>>> dev
 }
 
 void SimulationWindow::restoreToBindpose()
 {
 	scene_->restoreToBindpose();
-^^^^^^^ HEAD
     paintGL();
-}
-=======
-	paintGL();
 }
 
 void SimulationWindow::startSimulate()
@@ -516,4 +405,3 @@ void SimulationWindow::record()
 	delete AviGen;
 	QMessageBox::information(NULL, "Record finished", "Record finished.", QMessageBox::Ok);
 }
->>>>>>> dev

@@ -196,7 +196,7 @@ struct Skin
     QVector<QVector2D>	texcoords;
     QVector<uint>		indices;
 
-//=======
+
     // 旧版本数据名称，吴宁枫添加了shrinked为了解决绑定姿态太大的问题
     QVector<QVector3D>	bindpose_pos;	// 绑定姿态位置
     QVector<QVector3D>	bindpose_shrinked;	// 绑定姿态位置
@@ -207,7 +207,7 @@ struct Skin
     //QVector<QVector3D>	normals;
     //QVector<QVector2D>	texcoords;
     //QVector<uint>		indices;
-//>>>>>>> dev
+
     
     QVector<QVector4D>  joint_indices_; // 四个关节索引依次存储于x y z w
     QVector<QVector4D>  joint_weights_; // 四个关节权重依次存储于x y z w

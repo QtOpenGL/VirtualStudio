@@ -284,7 +284,7 @@ void Animation::clear()
     ticks = 0.0;
     ticks_per_second = 0.0;
     channels.clear();
-=======
+}
 	duration(pAnimation->mDuration), ticks_per_second(pAnimation->mTicksPerSecond), avatar(luke)
 {
 	for (uint channel_index = 0; channel_index < pAnimation->mNumChannels; ++channel_index) {
@@ -373,7 +373,6 @@ void Animation::addKeyframes( const ChannelList& cl, int offset, int length, dou
 
 	double tmp = (offset + length) * 0.001 * ticks_per_second;
 	duration = qMax(duration, tmp);
->>>>>>> dev
 }
 
 /************************************************************************/
