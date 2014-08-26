@@ -51,8 +51,6 @@
     <Filter Include="Resource Files\images">
       <UniqueIdentifier>{4c17326e-9cab-4d7c-b671-9f93ceca421d}</UniqueIdentifier>
     </Filter>
-<<<<<<< HEAD
-=======
     <Filter Include="ClothMotion">
       <UniqueIdentifier>{f15772ed-dd3e-4ded-973f-daa29c3d4ea6}</UniqueIdentifier>
     </Filter>
@@ -77,7 +75,6 @@
     <Filter Include="Dxf\global">
       <UniqueIdentifier>{47921251-c9f2-4ef6-8d1e-114bf5112db7}</UniqueIdentifier>
     </Filter>
->>>>>>> dev
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="abstractscene.cpp">
@@ -113,15 +110,12 @@
     <ClCompile Include="object_browser_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-<<<<<<< HEAD
-=======
     <ClCompile Include="opengl_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
->>>>>>> dev
     <ClCompile Include="pattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -155,15 +149,12 @@
     <ClCompile Include="Release\moc_mainwindow.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-<<<<<<< HEAD
-=======
     <ClCompile Include="Debug\moc_opengl_window.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Release\moc_opengl_window.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
->>>>>>> dev
     <ClCompile Include="Debug\moc_pattern.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -179,21 +170,6 @@
     <ClCompile Include="GeneratedFiles\qrc_virtualstudio.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="bounding_volume.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gadget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_mocap_import_dialog.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_mocap_import_dialog.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="mocap_import_dialog.cpp">
-=======
     <ClCompile Include="ClothMotion\cloth_motion.cpp">
       <Filter>ClothMotion</Filter>
     </ClCompile>
@@ -366,7 +342,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wunf_camera.cpp">
->>>>>>> dev
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -374,24 +349,18 @@
     <ClInclude Include="abstractscene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
-=======
     <CustomBuild Include="animation.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
->>>>>>> dev
     <CustomBuild Include="animation_editor_widget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <ClInclude Include="cad2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
-=======
     <ClInclude Include="camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
->>>>>>> dev
     <ClInclude Include="cloth.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -407,48 +376,27 @@
     <ClInclude Include="object_browser_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
-=======
     <CustomBuild Include="opengl_window.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <ClInclude Include="panel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
->>>>>>> dev
     <CustomBuild Include="pattern.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <ClInclude Include="sampler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
-=======
     <ClInclude Include="scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
->>>>>>> dev
     <CustomBuild Include="simulation_window.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <ClInclude Include="texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="bounding_volume.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gadget.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scene_node.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ui_mocapimportdialog.h">
-=======
     <ClInclude Include="ClothMotion\cloth_motion.h">
       <Filter>ClothMotion</Filter>
     </ClInclude>
@@ -657,7 +605,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wunf_camera.h">
->>>>>>> dev
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -671,21 +618,6 @@
     <None Include="shaders\phong.vert">
       <Filter>Resource Files\shaders</Filter>
     </None>
-<<<<<<< HEAD
-    <CustomBuild Include="camera.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="animation.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="scene.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="mocap_import_dialog.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-=======
->>>>>>> dev
   </ItemGroup>
   <ItemGroup>
     <None Include="images\add.png">
@@ -772,18 +704,6 @@
     <None Include="images\zoom.png">
       <Filter>Resource Files\images</Filter>
     </None>
-<<<<<<< HEAD
-    <None Include="shaders\simple.frag">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="shaders\simple.vert">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="shaders\skinning.vert">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="ClassDiagram.cd" />
-=======
     <None Include="shaders\lbs.vert">
       <Filter>Resource Files\shaders</Filter>
     </None>
@@ -795,6 +715,5 @@
     <Image Include="images\record.png">
       <Filter>Resource Files\images</Filter>
     </Image>
->>>>>>> dev
   </ItemGroup>
 </Project>

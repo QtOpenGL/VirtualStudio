@@ -197,7 +197,6 @@ private:
     QStringList			interaction_mode_names_;
 
     QOpenGLFunctions_4_0_Core*	glfunctions_;
-^^^^^^^ HEAD
     
     bool is_dual_quaternion_skinning_; // 是否采用双四元数
     bool is_joint_label_visible_; // 是否显示关节名称
