@@ -24,10 +24,10 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "taucs_util.h"
 #include "../timer.h"
-#include <cstdlib>
-#include <iostream>
+
 using namespace std;
 
 extern "C" {

@@ -34,8 +34,7 @@
 #include "obstacle.h"
 #include "spline.h"
 #include "../timer.h"
-#include <string>
-#include <vector>
+
 
 typedef std::tr1::shared_ptr<Cloth> SmtClothPtr;
 

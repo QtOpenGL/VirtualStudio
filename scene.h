@@ -1,18 +1,6 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <memory>
-#include <map>
-
-#include <QOpenGLBuffer>
-#include <QOpenGLDebugLogger>
-#include <QOpenGLShaderProgram>
-#include <QOpenGLVertexArrayObject>
-#include <QMatrix4x4>
-#include <QColor>
-#include <QStringList>
-#include <QTreeWidget>
-
 #include "abstractscene.h"
 #include "material.h"
 #include "animation.h"

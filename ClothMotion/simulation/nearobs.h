@@ -28,7 +28,6 @@
 #define NEAROBS_H
 
 #include "mesh.h"
-#include <vector>
 
 using namespace std;
 

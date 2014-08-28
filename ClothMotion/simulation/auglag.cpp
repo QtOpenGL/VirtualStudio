@@ -23,13 +23,11 @@
   IS". REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
-
+#include "cmheader.h"
 #include "optimization.hpp"
 
 #include "../alglib/optimization.h"
-#include <omp.h>
-#include <vector>
-#include <iostream>
+
 using namespace std;
 using namespace alglib;
 

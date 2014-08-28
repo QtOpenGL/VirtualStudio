@@ -4,12 +4,6 @@
 #include "sampler.h"
 #include "texture.h"
 
-#include <QMap>
-#include <QtGui/QOpenGLShaderProgram>
-#include <QPair>
-#include <QSharedPointer>
-#include <QVector>
-
 typedef QSharedPointer<QOpenGLShaderProgram> QOpenGLShaderProgramPtr;
 
 class TextureUnitConfiguration : public QPair<TexturePtr, SamplerPtr>

@@ -24,6 +24,7 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "separateobs.h"
 
 #include "collisionutil.h"
@@ -32,9 +33,7 @@
 #include "optimization.hpp"
 #include "simulation.h"
 #include "util.h"
-#include <omp.h>
-#include <assert.h>
-#include <QMessageBox>
+
 using namespace std;
 
 namespace SO {

@@ -24,6 +24,7 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "tensormax.h"
 #include "util.h"
 using namespace std;

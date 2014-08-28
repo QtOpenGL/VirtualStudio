@@ -29,8 +29,7 @@
 
 #include "transformation.h"
 #include "vectors.h"
-#include <utility>
-#include <vector>
+
 
 // material space (not fused at seams)
 struct Vert;

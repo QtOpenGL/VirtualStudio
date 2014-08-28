@@ -29,7 +29,6 @@
 
 #include "constraint.h"
 #include "mesh.h"
-#include <vector>
 
 struct Handle {
     double start_time, end_time, fade_time;

@@ -1,8 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-
 // Simulation classes
 class Scene;
 class AnimationClip;
@@ -68,7 +66,7 @@ private slots:
     void updateAnimation(int);
     void importMocap(QString& , QString&);
     void startSimulate();
-    bool save();
+    //bool save();
     //void updateAnimation(int);
     void updateSynthesizedAnimation(AnimationClip*, AnimationTrack*);
 
@@ -99,11 +97,11 @@ private:
     QAction* design_generate_cloth_action_;
     QAction* file_save_action_;
     QAction* file_save_as_action_;
-    QAction* file_import_avatar_action_;
-    QAction* file_import_pattern_action_;
+    //QAction* file_import_avatar_action_;
+    //QAction* file_import_pattern_action_;
 	// 读入OBJ衣服动作，wunf
     QAction* file_import_cloth_action_;
-    QAction* file_exit_action_;
+    //QAction* file_exit_action_;
     QActionGroup* interaction_group_;
     QAction* simulation_rotate_action_;
     QAction* simulation_pan_action_;
@@ -111,11 +109,11 @@ private:
     QAction* simulation_cloth_rotate_action_;
     QAction* simulation_cloth_move_action_;
     QAction* simulation_cloth_scale_action_;
-    QActionGroup* shading_group_;
-    QAction* simulation_shading_action_;
+    //QActionGroup* shading_group_;
+   // QAction* simulation_shading_action_;
     QAction* simulation_shading_wireframe_action_;
     QAction* simulation_wireframe_action_;
-    QAction* design_showgrid_action_;
+//    QAction* design_showgrid_action_;
     QAction* design_change_color_action_;
     QAction* design_change_texture_action_;
     QAction* start_simulate_;

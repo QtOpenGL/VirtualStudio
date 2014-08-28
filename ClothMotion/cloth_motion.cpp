@@ -1,11 +1,10 @@
+#include "cmheader.h"
 #include "cloth_motion.h"
 #include "simulation\simulation.h"
 #include "simulation\separateobs.h"
 #include "simulation\io.h"
 #include "simulation\magic.h"
-#include <assert.h>
-#include <QProgressDialog>
-#include <QString>
+
 
 struct Velocity
 { 

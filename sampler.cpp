@@ -1,8 +1,5 @@
+#include "cmheader.h"
 #include "sampler.h"
-
-#include <QOpenGLContext>
-#include <QOpenGLFunctions_4_0_Core>
-
 
 Sampler::Sampler()
 {

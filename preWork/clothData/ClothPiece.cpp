@@ -1,3 +1,4 @@
+#include "cmheader.h"
 //#include "StdAfx.h"
 #include "ClothPiece.h"
 #include "ClothLoop.h"

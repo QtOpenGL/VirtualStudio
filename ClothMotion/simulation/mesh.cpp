@@ -24,11 +24,11 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "mesh.h"
 #include "geometry.h"
 #include "util.h"
-#include <assert.h>
-#include <cstdlib>
+
 using namespace std;
 
 template <typename T1, typename T2> void check (const T1 *p1, const T2 *p2,

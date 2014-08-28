@@ -24,13 +24,13 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "popfilter.h"
 
 #include "magic.h"
 #include "optimization.hpp"
 #include "physics.h"
 #include "taucs_util.h"
-#include <utility>
 using namespace std;
 
 // "rubber band" stiffness to stop vertices moving too far from initial position

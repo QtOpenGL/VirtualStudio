@@ -1,13 +1,9 @@
+#include "cmheader.h"
 #include "simulation_window.h"
 
 #include "scene.h"
 #include "AVIGenerator.h"
 #include "animation_editor_widget.h"
-
-#include <QtGui>
-#include <QtWidgets/QtWidgets>
-#include <QOpenGLShaderProgram>
-#include <cassert>
 
 SimulationWindow::SimulationWindow( Scene* scene, QWindow* screen )
     : QWindow( screen ), 

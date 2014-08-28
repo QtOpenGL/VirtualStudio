@@ -27,7 +27,7 @@
 #ifndef DYNAMICREMESH_H
 #define DYNAMICREMESH_H
 
-#include <map>
+
 #include "cmcloth.h"
 #include "nearobs.h"
 

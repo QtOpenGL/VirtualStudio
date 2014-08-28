@@ -15,14 +15,7 @@
 #endif // _MSC_VER > 1000
 
 // needed headers
-#include <comdef.h>
-#include <memory.h>
-#include <tchar.h>
-#include <string.h>
-#include <vfw.h>
 
-#pragma message("     _Adding library: vfw32.lib" ) 
-#pragma comment ( lib, "vfw32.lib")
 
 // undefine this if you don't use MFC
 #define _AVIGENERATOR_USE_MFC

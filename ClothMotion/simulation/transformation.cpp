@@ -24,6 +24,7 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "transformation.h"
 
 using namespace std;

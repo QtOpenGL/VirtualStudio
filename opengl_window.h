@@ -1,9 +1,6 @@
 #ifndef OPENGLWINDOW_H
 #define OPENGLWINDOW_H
  
-#include <QWindow>
-#include <QOpenGLFunctions>
- 
 class QPainter;
 class QOpenGLContext;
 class QOpenGLPaintDevice;

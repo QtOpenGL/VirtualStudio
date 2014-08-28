@@ -1,6 +1,3 @@
-#include <memory>
-#include <vector>
-#include <fstream>
 #include "simulation\cmcloth.h"
 
 struct Simulation;

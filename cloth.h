@@ -2,9 +2,7 @@
 #define CLOTH_H
 
 #include "scene_node.h"
-#include <QVector3D>
-#include <QOpenGLBuffer>
-#include <memory>
+
 
 class QOpenGLVertexArrayObject;
 struct Cloth;

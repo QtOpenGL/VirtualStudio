@@ -21,6 +21,7 @@
 ** not clear to you.
 **
 **********************************************************************/
+#include "cmheader.h"
 //#include "StdAfx.h"
 #include "dl_dxf.h"
 

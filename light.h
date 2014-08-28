@@ -2,9 +2,7 @@
 #define LIGHT_H
 
 #include "scene_node.h"
-#include <QObject>
-#include <QColor>
-#include <QVector3D>
+
 
 enum LightType
 {

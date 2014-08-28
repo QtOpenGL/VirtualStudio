@@ -24,9 +24,10 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "obstacle.h"
 #include "util.h"
-#include <cstdio>
+
 
 using namespace std;
 

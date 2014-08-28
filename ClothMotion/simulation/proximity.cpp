@@ -24,13 +24,13 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "proximity.h"
 
 #include "collisionutil.h"
 #include "geometry.h"
 #include "magic.h"
 #include "simulation.h"
-#include <vector>
 using namespace std;
 
 template <typename T> struct Min {

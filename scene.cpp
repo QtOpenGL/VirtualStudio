@@ -1,16 +1,6 @@
+#include "cmheader.h"
 #define NOMINMAX // for the stupid name pollution, you can also use #undef max
 #include "scene.h"
-
-#include <limits>
-#include <assimp/cimport.h>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
-#include <QString>
-#include <QImage>
-#include <QtOpenGL/QGLWidget>
-#include <QOpenGLContext>
-#include <QOpenGLFunctions_4_0_Core>
 
 #include "camera.h"
 #include "light.h"
@@ -23,7 +13,8 @@ const QVector4D Scene::ori_color_[4] = {
     QVector4D(1.0f, 1.0f, 1.0f, 1.0f),
     QVector4D(0.5f, 0.5f, 1.0f, 1.0f),
     QVector4D(0.5f, 1.0f, 0.5f, 1.0f),
-    QVector4D(1.0f, 0.5f, 0.5f, 1.0f) };
+    QVector4D(1.0f, 0.5f, 0.5f, 1.0f) 
+};
 
 /************************************************************************/
 /* ·ÂÕæ³¡¾°                                                              */

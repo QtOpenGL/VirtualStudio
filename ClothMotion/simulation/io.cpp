@@ -24,14 +24,10 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "io.h"
 #include "util.h"
-#include <cassert>
-#include <cfloat>
-#include <fstream>
-#include <sstream>
-#include <QTextStream>
-#include <QFile>
+
 
 using namespace std;
 

@@ -29,7 +29,6 @@
 #define SPLINE_H
 
 #include "vectors.h"
-#include <vector>
 
 template<typename T>
 class Spline {

@@ -24,6 +24,7 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "collision.h"
 
 #include "collisionutil.h"
@@ -32,10 +33,7 @@
 #include "optimization.hpp"
 #include "simulation.h"
 #include "../timer.h"
-#include <algorithm>
-#include <fstream>
-#include <omp.h>
-#include <QMessageBox>
+
 using namespace std;
 
 static const int max_iter = 100;

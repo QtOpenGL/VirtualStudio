@@ -1,11 +1,5 @@
+#include "cmheader.h"
 #include "texture.h"
-
-#include <QImage>
-#include <QtOpenGL/QGLWidget>
-#include <QOpenGLContext>
-#include <QOpenGLFunctions_4_0_Core>
-
-#include <QDebug>
 
 Texture::Texture( TextureType type /*= Texture2D */ )
 	: m_type(type),

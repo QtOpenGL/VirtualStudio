@@ -30,7 +30,6 @@
 #include "cmcloth.h"
 #include "geometry.h"
 #include "simulation.h"
-#include <vector>
 
 template <Space s>
 double internal_energy (const Cloth &cloth);

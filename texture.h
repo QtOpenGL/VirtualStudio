@@ -1,9 +1,6 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <QtOpenGL>
-#include <QSharedPointer>
-
 class QImage;
 class QOpenGLFunctions_4_0_Core;
 

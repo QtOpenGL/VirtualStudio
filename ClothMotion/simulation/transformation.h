@@ -29,7 +29,6 @@
 
 #include "spline.h"
 #include "vectors.h"
-#include <iostream>
 
 // Transform the mesh
 struct Quaternion {

@@ -27,13 +27,9 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <string> // aa: win
 #include "mesh.h"
 #include "spline.h"
-#include <iostream>
-#include <string>
-#include <vector>
-#include <cstdarg>
+
 
 #define EPSILON		1e-7f
 #define M_PI       3.14159265358979323846

@@ -1,17 +1,5 @@
+#include "cmheader.h"
 #include "animation.h"
-
-#include <cmath>
-#include <fstream>
-#include <QFileInfo>
-#include <QMimeData>
-#include <QtGui>
-#include <QApplication>
-#include <QGraphicsScene>
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
-#include <QStyleOptionGraphicsItem>
-#include <QMessageBox>
-#include <algorithm>
 
 /************************************************************************/
 /* ASSIMP --> Qt数据类型转换函数                                         */
@@ -195,7 +183,7 @@ Animation::Animation( const aiAnimation* pAnimation, Avatar* luke )
     }
 }
 
-void Animation::addKeyframes( const ChannelList& cl, int start_time, int length,  double ticks_per_sec, double play_speed, double weight )
+void Animation::addKeyframes( const ChannelList& cl, int start_time, int length,  double ticks_per_sec, double /*play_speed*/, double weight )
 {
     // 单位转换毫秒-->节拍
     ticks_per_second = ticks_per_sec;
@@ -285,39 +273,40 @@ void Animation::clear()
     ticks_per_second = 0.0;
     channels.clear();
 }
-	duration(pAnimation->mDuration), ticks_per_second(pAnimation->mTicksPerSecond), avatar(luke)
-{
-	for (uint channel_index = 0; channel_index < pAnimation->mNumChannels; ++channel_index) {
-		const aiNodeAnim* pNodeAnim = pAnimation->mChannels[channel_index];
-		AnimationChannel new_channel(pNodeAnim);
-		QString joint_name(pNodeAnim->mNodeName.C_Str());
-		new_channel.joint = luke->finddJointByName(joint_name);
-		channels.push_back(new_channel);
-	}
-}
-
-Animation::Animation( const Animation* anim/*, int offset*/ /*= 0*/, double weight /*= 1.0 */ ) 
-	: ai_anim(anim->ai_anim), name(anim->name), duration(anim->duration), channels(anim->channels), ticks_per_second(anim->ticks_per_second), avatar(anim->avatar)
-{
-	//double offset_ticks = offset * 0.001 * ticks_per_second;
-	for(int channel_index = 0; channel_index < channels.size(); ++channel_index) {
-		AnimationChannel& channel = channels[channel_index];
-		for (int key_index = 0; key_index < channel.position_keys.size(); ++key_index) {
-			//channel.position_keys[key_index].time += offset_ticks;
-			channel.position_keys[key_index].value *= weight;
-		}
-
-		for (int key_index = 0; key_index < channel.rotation_keys.size(); ++key_index) {
-			//channel.rotation_keys[key_index].time += offset_ticks;
-			channel.rotation_keys[key_index].value *= weight;
-		}
-
-		for (int key_index = 0; key_index < channel.scaling_keys.size(); ++key_index) {
-			//channel.scaling_keys[key_index].time += offset_ticks;
-			channel.scaling_keys[key_index].value *= weight;
-		}
-	}
-}
+//	Animation(const aiAnimation* pAnimation, Avatar* luke)
+//	duration(pAnimation->mDuration), ticks_per_second(pAnimation->mTicksPerSecond), avatar(luke)
+//{
+//	for (uint channel_index = 0; channel_index < pAnimation->mNumChannels; ++channel_index) {
+//		const aiNodeAnim* pNodeAnim = pAnimation->mChannels[channel_index];
+//		AnimationChannel new_channel(pNodeAnim);
+//		QString joint_name(pNodeAnim->mNodeName.C_Str());
+//		new_channel.joint = luke->finddJointByName(joint_name);
+//		channels.push_back(new_channel);
+//	}
+//}
+//
+//Animation::Animation( const Animation* anim/*, int offset*/ /*= 0*/, double weight /*= 1.0 */ ) 
+//	: ai_anim(anim->ai_anim), name(anim->name), duration(anim->duration), channels(anim->channels), ticks_per_second(anim->ticks_per_second), avatar(anim->avatar)
+//{
+//	//double offset_ticks = offset * 0.001 * ticks_per_second;
+//	for(int channel_index = 0; channel_index < channels.size(); ++channel_index) {
+//		AnimationChannel& channel = channels[channel_index];
+//		for (int key_index = 0; key_index < channel.position_keys.size(); ++key_index) {
+//			//channel.position_keys[key_index].time += offset_ticks;
+//			channel.position_keys[key_index].value *= weight;
+//		}
+//
+//		for (int key_index = 0; key_index < channel.rotation_keys.size(); ++key_index) {
+//			//channel.rotation_keys[key_index].time += offset_ticks;
+//			channel.rotation_keys[key_index].value *= weight;
+//		}
+//
+//		for (int key_index = 0; key_index < channel.scaling_keys.size(); ++key_index) {
+//			//channel.scaling_keys[key_index].time += offset_ticks;
+//			channel.scaling_keys[key_index].value *= weight;
+//		}
+//	}
+//}
 
 // Animation& Animation::operator=( const Animation& anim )
 // {
@@ -333,47 +322,47 @@ Animation::Animation( const Animation* anim/*, int offset*/ /*= 0*/, double weig
 // 	return *(this);
 // }
 
-void Animation::addKeyframes( const ChannelList& cl, int offset, int length, double weight )
-{
-	// 效率有待改进
-	double offset_ticks = offset * 0.001 * ticks_per_second;
-	for(int channel_index = 0; channel_index < cl.size(); ++channel_index) {
-		// 找到对应的通道 优化时可考虑用Hashtable加速
-		auto it = channels.begin();
-		while (it != channels.end()) {
-			if (it->joint->name == cl[channel_index].joint->name) {
-				break;
-			}
-			++it;
-		}
-
-		Q_ASSERT(it != channels.end());
-		// 平移
-		for (int key_index = 0; key_index < cl[channel_index].position_keys.size(); ++key_index) {
-			VectorKey key = cl[channel_index].position_keys[key_index];
-			key.time += offset_ticks;// 单位转换毫秒-->节拍
-			key.value *= weight;
-			it->position_keys.push_back(key);
-		}
-		// 旋转
-		for (int key_index = 0; key_index < cl[channel_index].rotation_keys.size(); ++key_index) {
-			QuaternionKey key = cl[channel_index].rotation_keys[key_index];
-			key.time += offset_ticks;
-			key.value *= weight;
-			it->rotation_keys.push_back(key);
-		}
-		// 缩放
-		for (int key_index = 0; key_index < cl[channel_index].scaling_keys.size(); ++key_index) {
-			VectorKey key = cl[channel_index].scaling_keys[key_index];
-			key.time += offset_ticks;
-			key.value *= weight;
-			it->scaling_keys.push_back(key);
-		}
-	}
-
-	double tmp = (offset + length) * 0.001 * ticks_per_second;
-	duration = qMax(duration, tmp);
-}
+//void Animation::addKeyframes( const ChannelList& cl, int offset, int length, double weight )
+//{
+//	// 效率有待改进
+//	double offset_ticks = offset * 0.001 * ticks_per_second;
+//	for(int channel_index = 0; channel_index < cl.size(); ++channel_index) {
+//		// 找到对应的通道 优化时可考虑用Hashtable加速
+//		auto it = channels.begin();
+//		while (it != channels.end()) {
+//			if (it->joint->name == cl[channel_index].joint->name) {
+//				break;
+//			}
+//			++it;
+//		}
+//
+//		Q_ASSERT(it != channels.end());
+//		// 平移
+//		for (int key_index = 0; key_index < cl[channel_index].position_keys.size(); ++key_index) {
+//			VectorKey key = cl[channel_index].position_keys[key_index];
+//			key.time += offset_ticks;// 单位转换毫秒-->节拍
+//			key.value *= weight;
+//			it->position_keys.push_back(key);
+//		}
+//		// 旋转
+//		for (int key_index = 0; key_index < cl[channel_index].rotation_keys.size(); ++key_index) {
+//			QuaternionKey key = cl[channel_index].rotation_keys[key_index];
+//			key.time += offset_ticks;
+//			key.value *= weight;
+//			it->rotation_keys.push_back(key);
+//		}
+//		// 缩放
+//		for (int key_index = 0; key_index < cl[channel_index].scaling_keys.size(); ++key_index) {
+//			VectorKey key = cl[channel_index].scaling_keys[key_index];
+//			key.time += offset_ticks;
+//			key.value *= weight;
+//			it->scaling_keys.push_back(key);
+//		}
+//	}
+//
+//	double tmp = (offset + length) * 0.001 * ticks_per_second;
+//	duration = qMax(duration, tmp);
+//}
 
 /************************************************************************/
 /* 动画片段                                                             */
@@ -552,10 +541,10 @@ int AnimationClip::type() const
     return Type;
 }
 
-bool startLaterThan(const AnimationClip* lhs, const AnimationClip* rhs)
-{
-    return lhs->start_time_ < rhs->start_time_;
-}
+//bool startLaterThan(const AnimationClip* lhs, const AnimationClip* rhs)
+//{
+//    return lhs->start_time_ < rhs->start_time_;
+//}
 
 /************************************************************************/
 /* 动画轨道                                                             */

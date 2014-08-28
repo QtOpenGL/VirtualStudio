@@ -1,8 +1,4 @@
-#include <cmath>
-#include <climits>
-#include <QPointF>
-#include <QLineF>
-
+#include "cmheader.h"
 #include "camera.h"
 #include "bounding_volume.h"
 

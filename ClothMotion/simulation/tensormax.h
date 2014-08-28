@@ -28,7 +28,6 @@
 #define TENSORMAX_H
 
 #include "vectors.h"
-#include <vector>
 
 Mat2x2 tensor_max (const std::vector<Mat2x2> &Ms);
 

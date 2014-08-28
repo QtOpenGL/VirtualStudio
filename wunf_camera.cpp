@@ -1,3 +1,4 @@
+#include "cmheader.h"
 #include "wunf_camera.h"
 
 wunf_camera::wunf_camera( QObject* parent /*= 0 */ ) : 

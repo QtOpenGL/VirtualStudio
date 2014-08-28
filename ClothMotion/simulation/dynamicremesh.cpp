@@ -24,6 +24,7 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "dynamicremesh.h"
 #include "geometry.h"
 #include "magic.h"
@@ -31,9 +32,7 @@
 #include "tensormax.h"
 #include "../timer.h"
 #include "util.h"
-#include <algorithm>
-#include <cstdlib>
-#include <map>
+
 using namespace std;
 
 static const bool verbose = false;

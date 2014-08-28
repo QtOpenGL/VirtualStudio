@@ -1,8 +1,6 @@
 #ifndef OBJECT_BROWSER_WIDGET_H
 #define OBJECT_BROWSER_WIDGET_H
 
-#include <QTabWidget>
-
 class QTabWidget;
 class QTreeView;
 class QTableView;

@@ -46,8 +46,7 @@
 
 #include "mesh.h"
 #include "util.h"
-#include <float.h>
-#include <stdlib.h>
+
 
 #define MAX(a,b)	((a) > (b) ? (a) : (b))
 #define MIN(a,b)	((a) < (b) ? (a) : (b))

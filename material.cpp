@@ -1,7 +1,5 @@
+#include "cmheader.h"
 #include "material.h"
-
-#include <QOpenGLFunctions_3_1>
-#include <QOpenGLShaderProgram>
 
 
 Material::Material()

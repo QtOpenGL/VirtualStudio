@@ -1,3 +1,4 @@
+#include "cmheader.h"
 #include "cloth.h"
 #include "ClothMotion\simulation\cmcloth.h"
 

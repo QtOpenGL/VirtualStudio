@@ -1,11 +1,6 @@
 #ifndef WUNF_CAMERA_H
 #define WUNF_CAMERA_H
 
-#include <QObject>
-#include <QVector3D>
-#include <QQuaternion>
-#include <QMatrix4x4>
-
 class wunf_camera : public QObject
 {
 public:

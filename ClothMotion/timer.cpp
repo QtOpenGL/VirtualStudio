@@ -1,3 +1,4 @@
+#include "cmheader.h"
 #include "Timer.h"
 
 Timer::Timer (): last(0), total(0) {

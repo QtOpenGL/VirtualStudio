@@ -42,14 +42,13 @@
 
 \**************************************************************************/
 
-#include <stdlib.h>
-#include <assert.h>
 
+
+#include "cmheader.h"
 #include "bvh.h"
 #include "collision.h"
 #include "mesh.h"
-#include <climits>
-#include <utility>
+
 using namespace std;
 
 BOX node_box (const Node *node, bool ccd) {

@@ -1,8 +1,6 @@
 #ifndef ABSTRACTSCENE_H
 #define ABSTRACTSCENE_H
 
-#include <QObject>
-
 class QOpenGLContext;
 
 class AbstractScene : public QObject

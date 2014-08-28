@@ -1,14 +1,7 @@
+#include "cmheader.h"
 #include "animation_editor_widget.h"
-#include <algorithm>
-#include <QtGui>
-#include <QGraphicsSceneDragDropEvent>
-#include <QApplication>
-#include <QtWidgets/QtWidgets>
-#include <qcustomplot.h>
-#include <fstream>
-#include <cassert>
-
 #include "mocap_import_dialog.h"
+
 /************************************************************************/
 /* 动画轨道场景                                                          */
 /************************************************************************/
@@ -466,229 +459,6 @@ AnimationTableView::AnimationTableView( AnimationTableModel* model /*= 0*/, QWid
     resizeColumnsToContents();
     horizontalHeader()->setStretchLastSection(true);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-
-void AnimationTrackScene::adjustSceneHeight()
-{
-	setSceneRect(0, 0, width(), qMax(static_cast<int>(INITIAL_HEIGHT), tracks_.size() * TRACK_HEIGHT) + 30);
-}
-
-void AnimationTrackScene::adjustSceneWidth( qreal end )
-{
-	int padding = 30;
-	if (end > width()) {
-		setSceneRect(0, 0, end + padding, height());
-	}	
-}
-
-Animation* AnimationTrackScene::findAnimation(const QString& name)
-{
-	auto it = name_animation_->find(name);
-	Q_ASSERT(it != name_animation_->end());
-	return it->second;
-}
-
-AnimationTrack* AnimationTrackScene::findTrackByYPos( qreal y )
-{
-	int i = y / TRACK_HEIGHT;
-	Q_ASSERT(i >= 0 && i < tracks_.size());
-	return &tracks_[i];
-}
-
-// TODO
-void AnimationTrackScene::arrangeClips(/*AnimationClip* clip, AnimationTrack* track*/)
-{
-// #ifdef _DEBUG
-// 	qDebug() << "normalize"; // success!
-// #endif
-}
-
-void AnimationTrackScene::updateSyntheticAnim(Animation*& syn_anim)
-{
-	delete syn_anim;
-	foreach(AnimationTrack track, tracks_) {
-		if (!track.isEmpty()) {
-
-			Animation* anim = track.clips_[0]->animation();
-			syn_anim = new Animation(anim/*, track.clips_[0]->startTime()*/, track.clips_[0]->weight());
-			// 将轨道上其余的clip添加到合成动画中
-			for (int clip_index = 1; clip_index < track.clips_.size(); ++clip_index) {
-				AnimationClip* clip = track.clips_[clip_index];
-				syn_anim->addKeyframes(clip->channels(), clip->startTime(), clip->length(), clip->weight()); // 注意更新 duration
-			}
-		}
-	}
-}
-
-/************************************************************************/
-/* 动画轨道视图                                                          */
-/************************************************************************/
-AnimationTrackView::AnimationTrackView( AnimationTrackScene* scene, QWidget *parent /*= 0*/ )
-	: scene_(scene), QGraphicsView(parent), zoom_factor_(1.0)
-{
-	setScene(scene);
-	setAlignment(Qt::AlignLeft | Qt::AlignTop);
-	setAcceptDrops(true);
-	setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
-	setStyleSheet("background: lightgray;");
-}
-
-void AnimationTrackView::wheelEvent( QWheelEvent *event )
-{
-	// TODO: 调整缩放比例
-	if ( QApplication::keyboardModifiers() & Qt::ControlModifier)
-	{
-		double numDegrees = -event->delta() / 8.0;
-		double numSteps = numDegrees / 15.0;
-		zoom_factor_ = qMin(std::pow(1.125, numSteps), 32.0);
-		zoom_factor_ = qMax(zoom_factor_, 0.5);
-		//scale(zoom_factor_, 1.0);
-		//setTransform(QTransform(zoom_factor_, 0, 0, 0, 1.0, 0, 0, 0, 1.0));
-	}
-}
-
-void AnimationTrackView::setCurrentFrame( int frame )
-{
-	scene_->setCurrentFrame(frame);
-	update();
-}
-
-/************************************************************************/
-/* 动画轨道表格模型                                                      */
-/************************************************************************/
-AnimationTrackTableModel::AnimationTrackTableModel( AnimationTrackList* tracks, QObject *parent /*= 0*/ )
-	: tracks_(tracks), QAbstractTableModel(parent)
-{
-	titles_ << tr("Locked") << tr("Visible");
-}
-
-void AnimationTrackTableModel::clear()
-{
-	tracks_ = nullptr;
-	removeRows(0, rowCount(QModelIndex()), QModelIndex());
-	//reset();
-}
-
-bool AnimationTrackTableModel::isEmpty() const
-{
-	if (tracks_)
-		return tracks_->isEmpty();
-	else
-		return false;
-}
-
-int AnimationTrackTableModel::rowCount( const QModelIndex& parent ) const
-{
-	Q_UNUSED(parent);
-	if (tracks_)
-		return static_cast<int>(tracks_->size());
-	else
-		return 0;
-}
-
-int AnimationTrackTableModel::columnCount( const QModelIndex& parent ) const
-{
-	Q_UNUSED(parent);
-	return COLUMN_COUNT;
-}
-
-QVariant AnimationTrackTableModel::data( const QModelIndex &index, int role ) const
-{
-	if (!index.isValid())
-		return QVariant();
-
-	if (role == Qt::TextAlignmentRole) {
-		return int(Qt::AlignCenter);
-	} 
-	else if (role == Qt::DisplayRole) {
-		if (tracks_) {
-			if (index.column() == 0) {
-				return (*tracks_).at(index.row()).locked_;
-			}
-			else if (index.column() == 1) {
-				return (*tracks_).at(index.row()).visible_;
-			}
-		}
-	}
-
-	return QVariant();
-}
-
-bool AnimationTrackTableModel::setData( const QModelIndex &index, const QVariant &value, int role /*= Qt::EditRole*/ )
-{
-	if (index.isValid() && role == Qt::EditRole) {
-		int row = index.row();
-		int col = index.column();
-		if (col == 0) {
-			(*tracks_)[row].locked_ = value.toBool();
-		}
-		else if (col == 1) {
-			(*tracks_)[row].visible_ = value.toBool();
-		}
-		emit dataChanged(index, index);
-		return true;
-	}
-	return false;
-}
-
-QVariant AnimationTrackTableModel::headerData( int section, Qt::Orientation orientation, int role ) const
-{
-	if (role == Qt::DisplayRole) {
-		if (orientation == Qt::Horizontal)
-			return titles_[section];
-		else
-			return section+1;
-	}
-	return QVariant();
-}
-
-Qt::ItemFlags AnimationTrackTableModel::flags( const QModelIndex &index ) const
-{
-	if (!index.isValid())
-		return Qt::ItemIsEnabled;
-
-	return (QAbstractTableModel::flags(index) |= Qt::ItemIsEditable);
-}
-
-bool AnimationTrackTableModel::insertRows( int position, int rows, const QModelIndex &index /*= QModelIndex()*/ )
-{
-	Q_UNUSED(index);
-	beginInsertRows(QModelIndex(), position, position+rows-1);
-
-	for (int row = 0; row < rows; row++) {
-		tracks_->insert(position, AnimationTrack());
-	}
-
-	endInsertRows();
-	return true;
-}
-
-bool AnimationTrackTableModel::removeRows( int position, int rows, const QModelIndex &index /*= QModelIndex()*/ )
-{
-	Q_UNUSED(index);
-	beginRemoveRows(QModelIndex(), position, position+rows-1);
-
-	for (int row=0; row < rows; row++) {
-		tracks_->removeAt(position);
-	}
-
-	endRemoveRows();
-	return true;
-}
-
-/************************************************************************/
-/* 动画表格视图                                                          */
-/************************************************************************/
-
-AnimationTableView::AnimationTableView( AnimationTableModel* model /*= 0*/, QWidget *parent /*= 0*/ )
-{
-	Q_UNUSED(model);
-	Q_UNUSED(parent);
-	setAlternatingRowColors(true);
-	setSelectionBehavior(QTableView::SelectRows);
-	setSelectionMode(QTableView::SingleSelection);
-	resizeColumnsToContents();
-	horizontalHeader()->setStretchLastSection(true);
-	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 }
 
 void AnimationTableView::mousePressEvent( QMouseEvent *event )
@@ -744,118 +514,6 @@ RemixerWidget::RemixerWidget( QWidget *parent /*= 0*/ )
     createConnections();
 
     updateTrackEditUI();
-}
-/************************************************************************/
-/* 动画轨道表格视图                                                      */
-/************************************************************************/
-AnimationTrackTableView::AnimationTrackTableView(AnimationTrackTableModel* model , QWidget* parent)
-{
-	Q_UNUSED(model);
-	Q_UNUSED(parent);
-	setSelectionBehavior(QTableView::SelectRows);
-	setSelectionMode(QTableView::SingleSelection);
-	setAlternatingRowColors(true);
-	resizeColumnsToContents();
-	horizontalHeader()->setStretchLastSection(true);
-	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-}
-
-/************************************************************************/
-/* 部件代理                                                              */
-/************************************************************************/
-CheckBoxDelegate::CheckBoxDelegate( QObject* parent /*= 0*/ )
-	: QItemDelegate(parent)
-{
-}
-
-QWidget * CheckBoxDelegate::createEditor( QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index ) const
-{
-	Q_UNUSED(option);
-	Q_UNUSED(index);
-	BooleanWidget *editor = new BooleanWidget(parent);
-	//editor->setIcon(QIcon(":/images/lock.png"));
-	return editor;
-}
-
-void CheckBoxDelegate::setEditorData( QWidget *editor, const QModelIndex &index ) const
-{
-	bool value = index.model()->data(index, Qt::EditRole).toBool();
-
-	BooleanWidget* checkBox = static_cast<BooleanWidget*>(editor);
-	checkBox->setChecked(value);
-}
-
-void CheckBoxDelegate::setModelData( QWidget *editor, QAbstractItemModel *model, const QModelIndex &index ) const
-{
-	BooleanWidget* checkBox = static_cast<BooleanWidget*>(editor);
-	bool value = checkBox->isChecked();
-	model->setData(index, value, Qt::EditRole);
-}
-
-void CheckBoxDelegate::updateEditorGeometry( QWidget *editor, const QStyleOptionViewItem &option/*, const QModelIndex &index*/ ) const
-{
-	editor->setGeometry(option.rect);
-}
-
-void CheckBoxDelegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const
-{
-	drawBackground(painter, option, index);
-	drawCheck(painter, option, option.rect, index.data().toBool() ? Qt::Checked : Qt::Unchecked);
-	//drawDecoration(painter, option, option.rect, QPixmap(":/images/lock.png"));
-	drawFocus(painter, option, option.rect);
-}
-
-BooleanWidget::BooleanWidget( QWidget* parent /*= 0*/ )
-	: QWidget(parent)
-{
-	checkbox_ = new QCheckBox(this);
-	QHBoxLayout* layout = new QHBoxLayout(this);
-	layout->addWidget(checkbox_, 0, Qt::AlignCenter);
-}
-
-bool BooleanWidget::isChecked()
-{
-	return checkbox_->isChecked();
-}
-
-void BooleanWidget::setChecked( bool value )
-{
-	checkbox_->setChecked(value);
-}
-/************************************************************************/
-/* 动画混合部件                                                          */
-/************************************************************************/
-
-int RemixerWidget::frame_interval_ = NORMAL;
-int RemixerWidget::sample_interval_;
-int RemixerWidget::sim_interval_;
-
-RemixerWidget::RemixerWidget( QWidget *parent /*= 0*/ )
-	: QWidget(parent), paused_(true), loop_(true)
-{
-	createWidgets();
-	createSceneView();
-	createLayout();
-	createStates();
-	// 添加最初的动画轨道 要保证至少有一个动画轨道
-	addTrack();
-
-	setAcceptDrops(true);
-
-	state_machine_.setInitialState(play_state_);
-	QTimer::singleShot(0, &state_machine_, SLOT(start()));
-
-	// 动画时间线
-	timer_ = new QTimer(this);
-	timer_->start(frame_interval_);
-	createConnections();
-
-	std::ifstream ifs("patameters/sample_parameter.txt");
-	assert(ifs.is_open());
-
-	ifs >> sample_interval_;
-	ifs >> sim_interval_;
-	ifs.close();
 }
 
 RemixerWidget::~RemixerWidget()
@@ -1102,14 +760,6 @@ void RemixerWidget::updateTrackEditUI()
     track_view_->setInteractive(paused_);
 }
 
-void RemixerWidget::updateUI(AnimationClip* clip, AnimationTrack* track)
-{
-	Q_UNUSED(clip);
-	Q_UNUSED(track);
-	frame_slider_->setRange(animation_track_scene_->start_frame_, animation_track_scene_->end_frame_);
-	end_frame_lcd_->display(animation_track_scene_->end_frame_);
-}
-
 void RemixerWidget::changeSpeed( int index )
 {
     switch(index) 
@@ -1141,13 +791,6 @@ void RemixerWidget::addKeyframe()
 void RemixerWidget::showImportMocapDialog()
 {
     mocap_import_dialog_->show();
-}
-
-void RemixerWidget::setFrameTime( FrameTime time )
-{
-	frame_interval_ = time;
-	if (timer_)
-		timer_->setInterval(time);
 }
 
 /************************************************************************/
@@ -1406,37 +1049,6 @@ void PoserWidget::setCurChannel(const QModelIndex& index)
 #endif
 }
 
-void PoserWidget::addRandomGraph()
-{
-	int n = 50; // number of points in graph
-	double xScale = (rand()/(double)RAND_MAX + 0.5)*2;
-	double yScale = (rand()/(double)RAND_MAX + 0.5)*2;
-	double xOffset = (rand()/(double)RAND_MAX - 0.5)*4;
-	double yOffset = (rand()/(double)RAND_MAX - 0.5)*5;
-	double r1 = (rand()/(double)RAND_MAX - 0.5)*2;
-	double r2 = (rand()/(double)RAND_MAX - 0.5)*2;
-	double r3 = (rand()/(double)RAND_MAX - 0.5)*2;
-	double r4 = (rand()/(double)RAND_MAX - 0.5)*2;
-	QVector<double> x(n), y(n);
-	for (int i=0; i<n; i++)
-	{
-		x[i] = (i/(double)n-0.5)*10.0*xScale + xOffset;
-		y[i] = (sin(x[i]*r1*5)*sin(cos(x[i]*r2)*r4*3)+r3*cos(sin(x[i])*r4*2))*yScale + yOffset;
-	}
-
-	channel_plotter_->addGraph();
-	channel_plotter_->graph()->setName(QString("New graph %1").arg(channel_plotter_->graphCount()-1));
-	channel_plotter_->graph()->setData(x, y);
-	channel_plotter_->graph()->setLineStyle((QCPGraph::LineStyle)(rand()%5+1));
-	if (rand()%100 > 75)
-		channel_plotter_->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ScatterShape)(rand()%9+1)));
-	QPen graphPen;
-	graphPen.setColor(QColor(rand()%245+10, rand()%245+10, rand()%245+10));
-	graphPen.setWidthF(rand()/(double)RAND_MAX*2+1);
-	channel_plotter_->graph()->setPen(graphPen);
-	channel_plotter_->replot();
-}
-
 /************************************************************************/
 /* 动画编辑器部件                                                        */
 /************************************************************************/
@@ -1505,28 +1117,3 @@ void AnimationEditorWidget::updateChannelData()
     poser_->updateChannelData(remixer_->track_scene_->syntheticAnimation());
 }
 
-
-void AnimationEditorWidget::setAnimationModel( AnimationTableModel* model )
-{
-	if (remixer_)
-		remixer_->animation_table_view_->setModel(model);
-}
-
-void AnimationEditorWidget::setSkeletonModel( SkeletonModel* model )
-{
-	if (poser_)
-		poser_->skeleton_tree_view_->setModel(model);
-}
-
-void AnimationEditorWidget::setNameAnimationMap( std::map<QString, Animation*>* name_anim )
-{
-	if (remixer_)
-		remixer_->animation_track_scene_->setNameAnimationMap(name_anim);
-}
-
-void AnimationEditorWidget::updateSyntheticAnim(Animation*& syn_anim)
-{
-	if (remixer_) {
-		remixer_->animation_track_scene_->updateSyntheticAnim(syn_anim);
-	}
-}

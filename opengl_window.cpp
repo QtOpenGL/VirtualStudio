@@ -1,11 +1,5 @@
+#include "cmheader.h"
 #include "opengl_window.h"
-
-#include <QCoreApplication>
-
-#include <QOpenGLContext>
-#include <QOpenGLPaintDevice>
-#include <QPainter>
-
 
 OpenGLWindow::OpenGLWindow( QWindow *parent /*= 0*/ )
 	: QWindow(parent),

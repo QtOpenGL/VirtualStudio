@@ -24,10 +24,11 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "collisionutil.h"
 
 #include "simulation.h"
-#include <omp.h>
+
 using namespace std;
 
 void collect_leaves (BVHNode *node, vector<BVHNode*> &leaves);

@@ -1,9 +1,6 @@
 #ifndef SAMPLER_H
 #define SAMPLER_H
 
-#include <QtOpenGL/QtOpenGL>
-#include <QSharedPointer>
-
 class QOpenGLFunctions_4_0_Core;
 
 class Sampler

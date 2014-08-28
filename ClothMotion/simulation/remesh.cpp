@@ -24,14 +24,13 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "remesh.h"
 #include "blockvectors.hpp"
 #include "geometry.h"
 #include "magic.h"
 #include "util.h"
-#include <assert.h>
-#include <cstdlib>
-#include <cstdio>
+
 using namespace std;
 
 RemeshOp RemeshOp::inverse () const {

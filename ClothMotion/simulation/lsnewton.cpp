@@ -24,12 +24,12 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "optimization.hpp"
 
 #include "taucs_util.h"
 #include "util.h"
 
-#include <QMessageBox>
 
 using namespace std;
 

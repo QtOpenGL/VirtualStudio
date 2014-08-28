@@ -24,14 +24,10 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "util.h"
 #include "mesh.h"
-#include <algorithm>
-#include <iomanip>
-#include <limits>
-#include <map>
-#include <sstream>
-#include <cstdio>
+
 
 using namespace std;
 

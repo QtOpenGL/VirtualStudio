@@ -3,8 +3,7 @@
 
 //#include "winport.hpp" // aa: windows bindings, etc
 
-#include <cmath>
-#include <iostream>
+
 
 #define __align(sz) __declspec(align(sz))
 inline void* malloc_align(size_t size, size_t alignment = 32) { return _aligned_malloc(size, alignment); }

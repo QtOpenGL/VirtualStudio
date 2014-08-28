@@ -1,4 +1,4 @@
-//#include "StdAfx.h"
+#include "cmheader.h"
 #include "ClothLoop.h"
 
 

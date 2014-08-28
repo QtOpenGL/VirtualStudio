@@ -24,6 +24,7 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "vectors.h"
 #include "blockvectors.hpp"
 using namespace std;

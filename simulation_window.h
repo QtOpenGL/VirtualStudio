@@ -1,12 +1,6 @@
 #ifndef SIMULATION_WINDOW_H
 #define SIMULATION_WINDOW_H
 
-#include <QWindow>
-#include <QTime>
-
-#include <QOpenGLVertexArrayObject>
-#include <QOpenGLBuffer>
-
 class Animation;
 class QOpenGLShaderProgram;
 class Scene;

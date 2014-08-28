@@ -32,8 +32,7 @@
 #include "spline.h"
 #include "util.h"
 #include "vectors.h"
-#include <map>
-#include <vector>
+
 
 typedef std::map<Node*,Vec3> MeshGrad;
 typedef std::map<std::pair<Node*,Node*>,Mat3x3> MeshHess;

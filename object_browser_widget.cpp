@@ -1,7 +1,5 @@
+#include "cmheader.h"
 #include "object_browser_widget.h"
-
-#include <QtGui>
-#include <QtWidgets/QtWidgets>
 
 #include "scene.h"
 

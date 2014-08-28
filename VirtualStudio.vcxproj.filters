@@ -155,12 +155,6 @@
     <ClCompile Include="Release\moc_opengl_window.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Debug\moc_pattern.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_pattern.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_simulation_window.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -343,6 +337,15 @@
     </ClCompile>
     <ClCompile Include="wunf_camera.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cmheader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_pattern.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_pattern.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -541,9 +544,6 @@
     <ClInclude Include="ClothMotion\alglib\statistics.h">
       <Filter>ClothMotion\alglib</Filter>
     </ClInclude>
-    <ClInclude Include="ClothMotion\alglib\stdafx.h">
-      <Filter>ClothMotion\alglib</Filter>
-    </ClInclude>
     <ClInclude Include="ClothMotion\simulation\cmcloth.h">
       <Filter>ClothMotion\simulation</Filter>
     </ClInclude>
@@ -605,6 +605,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wunf_camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cmheader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

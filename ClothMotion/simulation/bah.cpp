@@ -24,8 +24,9 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "bah.h"
-#include <assert.h>
+
 
 Box &Box::operator+= (const Vec2 &u) {
     umin = vec_min(umin, u);

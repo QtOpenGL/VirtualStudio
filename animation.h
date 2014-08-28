@@ -1,24 +1,7 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
-#include <map>
 
-#include <QMatrix4x4>
-#include <QPair>
-#include <QVector4D>
-#include <QVector3D>
-#include <QVector2D>
-#include <QQuaternion>
-#include <QAbstractTableModel>
-#include <QAbstractItemModel>
-#include <QList>
-#include <QStringList>
-#include <QGraphicsObject>
-#include <QGraphicsItemGroup>
-#include <QOpenGLVertexArrayObject>
-
-#include <assimp/scene.h>
-#include <assimp/matrix4x4.h>
 
 #include "material.h"
 #include "bounding_volume.h"
@@ -162,7 +145,7 @@ struct AnimationChannel
     QVector<QuaternionKey>	rotation_keys;
     QVector<VectorKey>		scaling_keys;
 
-    AnimationChannel() {}
+    //AnimationChannel() {}
     AnimationChannel(Joint* j = nullptr)
 	: joint(j)
     {}
@@ -297,15 +280,16 @@ public:
 
 //    bool overlapWith(const AnimationClip* clip);
 // signals:
-//     void clipMoved();
+//    
 
 // 旧的接口和数据，在新版本中没有使用
     double weight() const { return weight_; }
     void setWeight(double w) { weight_ = w; }
     qreal width() const { return boundingRect().width(); }
     Animation* animation() const { return animation_; }
-signals:
-    void clipMoved(AnimationClip*, AnimationTrack* track){} // clip移动了 要检测该clip与其他clip区间有无重叠 可能需要修改AnimationTrackScene的end_frame
+//signals:
+	//void clipMoved();
+    //void clipMoved(AnimationClip*, AnimationTrack* track){} // clip移动了 要检测该clip与其他clip区间有无重叠 可能需要修改AnimationTrackScene的end_frame
     double			weight_;	// 混合权重
 
 protected:
@@ -357,8 +341,8 @@ signals:
     void clipMoved();
 
 // 旧接口和数据，新版本没有使用
-    void addSection(int start, int end) { vacant_sections_.push_back(qMakePair(start, end)); }
-    void addClip(AnimationClip* clip);
+   // void addSection(int start, int end) { vacant_sections_.push_back(qMakePair(start, end)); }
+    //void addClip(AnimationClip* clip);
 
 private:
     void move(int dist);
@@ -545,8 +529,8 @@ private:
     void makeSkinCacheTest2();
 
 // 旧接口
-    void loadDiffuseTexture();
-    bool createVertexBuffers();
+    //void loadDiffuseTexture();
+    //bool createVertexBuffers();
 
     const aiScene*			ai_scene_;	    // ASSIMP场景
     Joint*					root_;			// 根关节

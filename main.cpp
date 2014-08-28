@@ -1,7 +1,5 @@
+#include "cmheader.h"
 #include "mainwindow.h"
-
-#include <QtGui>
-#include <QApplication>
 //#include <QtOpenGL>
 
 // error code

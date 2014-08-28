@@ -24,13 +24,13 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "plasticity.h"
 
 #include "bah.h"
 #include "geometry.h"
 #include "optimization.hpp"
 #include "physics.h"
-#include <omp.h>
 
 using namespace std;
 

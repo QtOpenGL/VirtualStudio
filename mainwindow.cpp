@@ -1,11 +1,5 @@
+#include "cmheader.h"
 #include "mainwindow.h"
-
-#include <QtGui>
-#include <QWidget>
-#include <QPrinter>
-#include <QSplitter>
-#include <QWindow>
-#include <fstream>
 
 // simulation
 #include "scene.h"
@@ -34,12 +28,12 @@ MainWindow::MainWindow( QWidget *parent )
 void MainWindow::createViews() 
 {
     simulation_view_ = new SimulationWindow(scene_);
-    pattern_scene_ = new PatternScene(this);
+    pattern_scene_ = new PatternScene(/*this*/);
     QSize page_size = printer_->paperSize(QPrinter::Point).toSize();
     pattern_scene_->setSceneRect(0, 0, page_size.width(), page_size.height());
-    design_view_ = new PatternView(this);
-    design_view_->setScene(pattern_scene_);
-    design_view_->setSceneRect(pattern_scene_->sceneRect());
+    design_view_ = new PatternView(/*this*/);
+    //design_view_->setScene(pattern_scene_);
+    //design_view_->setSceneRect(pattern_scene_->sceneRect());
 
     splitter_ = new QSplitter(Qt::Horizontal);
     QWidget* container = createWindowContainer(simulation_view_, this);
@@ -412,16 +406,17 @@ void MainWindow::importMocap(QString& asf_file, QString& amc_file)
         QMessageBox::critical(this, "Failed to import %1 and %2", QString("").arg(asf_file).arg(amc_file), QMessageBox::Ok);
     }
 // wunf
+}
 void MainWindow::fileImportCloth()
 {
     if (okToContinue()) {
-	QString file_name = QFileDialog::getOpenFileName(this, tr("Import Cloth"),  ".", tr("Cloth files (*.obj)"));
+		QString file_name = QFileDialog::getOpenFileName(this, tr("Import Cloth"),  ".", tr("Cloth files (*.obj)"));
 
-	if (!file_name.isEmpty()) {
-	    obj_cloth_file_ = file_name;
-	    scene_->importCloth(file_name);
-	    simulation_view_->paintGL();
-	}
+		if (!file_name.isEmpty()) {
+			obj_cloth_file_ = file_name;
+			scene_->importCloth(file_name);
+			simulation_view_->paintGL();
+		}
     }
 }
 
@@ -531,94 +526,94 @@ void MainWindow::toggleRecord()
 	simulation_view_->record();
 }
 
-void MainWindow::fileOpen()
-{
-	if (okToContinue()) {
-		QString file_name = QFileDialog::getOpenFileName(this, tr("Open Project File"),  ".", tr("Project files (*.prj)"));
-
-		if (!file_name.isEmpty()) {
-			project_file_ = file_name;
-		}
-	}
-
-	std::ifstream prjfile(project_file_.toStdString());
-	std::string tag, file;
-	while(prjfile >> tag)
-	{
-		if(tag == "avatar")
-		{
-			prjfile >> file;
-			avatar_file_ = QString::fromStdString(file);
-			scene_->importAvatar(avatar_file_);
-			animation_editor_->setAnimationModel(scene_->avatarAnimationModel());
-			animation_editor_->setSkeletonModel(scene_->avatarSkeletonModel());
-			animation_editor_->setNameAnimationMap(scene_->avatarNameAnimationMap());
-		}
-		else if(tag == "obj")
-		{
-			prjfile >> file;
-			obj_cloth_file_ = QString::fromStdString(file);
-			scene_->importCloth(obj_cloth_file_);
-		}
-		else if(tag == "cmf")
-		{
-			prjfile >> file;
-			cloth_motion_file_ = QString::fromStdString(file);
-			scene_->load_cm_file(cloth_motion_file_.toStdString().c_str());
-		}
-	}
-	prjfile.close();
-	simulation_view_->paintGL();
-}
-
-void MainWindow::fileSave()
-{
-	if(project_file_.isEmpty())
-	{
-		if (okToContinue()) {
-			QString file_name = QFileDialog::getSaveFileName(this, tr("Save Project File"),  ".", tr("Project files (*.prj)"));
-
-			if (!file_name.isEmpty()) {
-				project_file_ = file_name;
-			}
-		}
-	}
-
-	std::ofstream prjfile(project_file_.toStdString());
-	prjfile << "avatar " << avatar_file_.toStdString() << std::endl;
-	if(cloth_motion_file_.isEmpty())
-		cloth_motion_file_ = simulation_view_->getClothMotionFile();
-	if(cloth_motion_file_.isEmpty())
-	{
-		if(!obj_cloth_file_.isEmpty())
-			prjfile << "obj " << obj_cloth_file_.toStdString() << std::endl;
-	}
-	else
-		prjfile << "cmf " << cloth_motion_file_.toStdString() << std::endl;
-
-	prjfile.close();
-}
-
-void MainWindow::fileSaveAs()
-{
-	if (okToContinue()) {
-		QString file_name = QFileDialog::getSaveFileName(this, tr("Save Project File"),  ".", tr("Project files (*.prj)"));
-
-		if (!file_name.isEmpty()) {
-			project_file_ = file_name;
-		}
-	}
-
-	std::ofstream prjfile(project_file_.toStdString());
-	prjfile << "avatar " << avatar_file_.toStdString() << std::endl;
-	if(cloth_motion_file_.isEmpty())
-		cloth_motion_file_ = simulation_view_->getClothMotionFile();
-	if(cloth_motion_file_.isEmpty())
-	{
-		if(!obj_cloth_file_.isEmpty())
-			prjfile << "obj " << obj_cloth_file_.toStdString() << std::endl;
-	}
-	else
-		prjfile << "cmf " << cloth_motion_file_.toStdString() << std::endl;
-	prjfile.close();
-}
+//void MainWindow::fileOpen()
+//{
+//	if (okToContinue()) {
+//		QString file_name = QFileDialog::getOpenFileName(this, tr("Open Project File"),  ".", tr("Project files (*.prj)"));
+//
+//		if (!file_name.isEmpty()) {
+//			project_file_ = file_name;
+//		}
+//	}
+//
+//	std::ifstream prjfile(project_file_.toStdString());
+//	std::string tag, file;
+//	while(prjfile >> tag)
+//	{
+//		if(tag == "avatar")
+//		{
+//			prjfile >> file;
+//			avatar_file_ = QString::fromStdString(file);
+//			scene_->importAvatar(avatar_file_);
+//			animation_editor_->setAnimationModel(scene_->avatarAnimationModel());
+//			animation_editor_->setSkeletonModel(scene_->avatarSkeletonModel());
+//			animation_editor_->setNameAnimationMap(scene_->avatarNameAnimationMap());
+//		}
+//		else if(tag == "obj")
+//		{
+//			prjfile >> file;
+//			obj_cloth_file_ = QString::fromStdString(file);
+//			scene_->importCloth(obj_cloth_file_);
+//		}
+//		else if(tag == "cmf")
+//		{
+//			prjfile >> file;
+//			cloth_motion_file_ = QString::fromStdString(file);
+//			scene_->load_cm_file(cloth_motion_file_.toStdString().c_str());
+//		}
+//	}
+//	prjfile.close();
+//	simulation_view_->paintGL();
+//}
+//
+//void MainWindow::fileSave()
+//{
+//	if(project_file_.isEmpty())
+//	{
+//		if (okToContinue()) {
+//			QString file_name = QFileDialog::getSaveFileName(this, tr("Save Project File"),  ".", tr("Project files (*.prj)"));
+//
+//			if (!file_name.isEmpty()) {
+//				project_file_ = file_name;
+//			}
+//		}
+//	}
+//
+//	std::ofstream prjfile(project_file_.toStdString());
+//	prjfile << "avatar " << avatar_file_.toStdString() << std::endl;
+//	if(cloth_motion_file_.isEmpty())
+//		cloth_motion_file_ = simulation_view_->getClothMotionFile();
+//	if(cloth_motion_file_.isEmpty())
+//	{
+//		if(!obj_cloth_file_.isEmpty())
+//			prjfile << "obj " << obj_cloth_file_.toStdString() << std::endl;
+//	}
+//	else
+//		prjfile << "cmf " << cloth_motion_file_.toStdString() << std::endl;
+//
+//	prjfile.close();
+//}
+//
+//void MainWindow::fileSaveAs()
+//{
+//	if (okToContinue()) {
+//		QString file_name = QFileDialog::getSaveFileName(this, tr("Save Project File"),  ".", tr("Project files (*.prj)"));
+//
+//		if (!file_name.isEmpty()) {
+//			project_file_ = file_name;
+//		}
+//	}
+//
+//	std::ofstream prjfile(project_file_.toStdString());
+//	prjfile << "avatar " << avatar_file_.toStdString() << std::endl;
+//	if(cloth_motion_file_.isEmpty())
+//		cloth_motion_file_ = simulation_view_->getClothMotionFile();
+//	if(cloth_motion_file_.isEmpty())
+//	{
+//		if(!obj_cloth_file_.isEmpty())
+//			prjfile << "obj " << obj_cloth_file_.toStdString() << std::endl;
+//	}
+//	else
+//		prjfile << "cmf " << cloth_motion_file_.toStdString() << std::endl;
+//	prjfile.close();
+//}

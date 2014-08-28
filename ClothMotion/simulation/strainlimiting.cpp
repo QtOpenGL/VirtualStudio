@@ -24,11 +24,11 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+#include "cmheader.h"
 #include "strainlimiting.h"
 
 #include "optimization.hpp"
 #include "simulation.h"
-#include <omp.h>
 
 using namespace std;
 

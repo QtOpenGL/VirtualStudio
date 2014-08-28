@@ -28,9 +28,7 @@
 #define SPARSE_HPP
 
 #include "util.h"
-#include <fstream>
-#include <utility>
-#include <vector>
+
 
 inline size_t find_index (int i, const std::vector<int> &indices) {
     for (size_t ii = 0; ii < indices.size(); ii++)

@@ -2,8 +2,9 @@
 //
 //////////////////////////////////////////////////////////////////////
 
+#include "cmheader.h"
 #include "AVIGenerator.h"
-#include <cassert>
+
 
 #ifdef _DEBUG
 #undef THIS_FILE

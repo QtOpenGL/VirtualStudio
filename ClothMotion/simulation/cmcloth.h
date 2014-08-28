@@ -29,7 +29,7 @@
 
 //#include "dde.hpp"
 #include "mesh.h"
-#include <memory>
+
 
 typedef Vec<4> Vec4;
 
