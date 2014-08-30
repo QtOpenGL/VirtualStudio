@@ -283,7 +283,7 @@ void SimulationWindow::startSimulate()
 			break;  
 		if(!inited)
 		{
-			scene_->updateAvatarAnimationSim(0);
+			scene_->updateAvatarAnimationSim(NULL, 0);
 			scene_->initAvatarToSimulate();
 			scene_->startSimulate();
 			// abandonded
@@ -292,7 +292,7 @@ void SimulationWindow::startSimulate()
 		}
 		else
 		{
-			scene_->updateAvatarAnimationSim(i);
+			scene_->updateAvatarAnimationSim(NULL, i);
 			scene_->updateAvatarToSimulate();
 			scene_->simulateStep();
 		}
@@ -376,7 +376,7 @@ void SimulationWindow::record()
 
 	for(int i = 0; i < total_frame; ++i)
 	{
-		updateAnimation(i);
+		updateAnimation(NULL, i);
 		process.setValue(i + 1);
 		if(process.wasCanceled())  
 			break;
