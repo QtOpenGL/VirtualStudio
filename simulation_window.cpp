@@ -267,7 +267,7 @@ void SimulationWindow::startSimulate()
 	//	QMessageBox::critical(0, "error", "InitEngine error!");
 	//}
 
-	int factor = RemixerWidget::getSampleInterval() / RemixerWidget::getSimInterval();
+	int factor = /*RemixerWidget::getSampleInterval() / RemixerWidget::getSimInterval()*/1.0f;
 	total_frame *= factor;
 
 	QProgressDialog process(NULL);  

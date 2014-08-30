@@ -185,7 +185,7 @@ void Scene::render()
 	    else
 		glfunctions_->glBindTexture(GL_TEXTURE_2D, texture_ids_[2]);
 	    if(cloth_loaded_ || replay_)
-		renderClothes(shader);
+		renderClothes(shading_display_shader);
 	    reset_transform();
 
 	    //shader->release();
@@ -333,6 +333,7 @@ void Scene::importCloth(const QString& filename)
 {
     SmtClothPtr cloth = ClothHandler::load_cloth_from_obj(filename.toStdString().c_str());
     cloth_handler_->add_clothes_to_handler(cloth);
+	zfCloth * zfcloth = new zfCloth(cloth);
     //cloth->load_zfcloth(filename.toStdString().c_str());
     clothes_.push_back(zfcloth);
     color_.push_back(ori_color_[(clothes_.size() - 1) % 4]);
@@ -402,21 +403,21 @@ void Scene::reset_transform()
     transform_[7] = quater.scalar();
 }
 
-AnimationTableModel* Scene::avatarAnimationModel()
-{
-    if (avatar_ && avatar_->hasAnimations())
-	return avatar_->animation_model_;
-    else
-	return nullptr;
-}
+//AnimationTableModel* Scene::avatarAnimationModel()
+//{
+//    if (avatar_ && avatar_->hasAnimations())
+//		return avatar_->animation_model_;
+//    else
+//	return nullptr;
+//}
 
-SkeletonModel* Scene::avatarSkeletonModel()
-{
-    if (avatar_ )
-	return avatar_->skeleton_model_;
-    else
-	return nullptr;
-}
+//SkeletonModel* Scene::avatarSkeletonModel()
+//{
+//    if (avatar_ )
+//	return avatar_->skeleton_model_;
+//    else
+//	return nullptr;
+//}
 
 void Scene::buildNameAnimationMap(Avatar* avatar)
 {
@@ -438,21 +439,28 @@ void Scene::buildNameAnimationMap(Avatar* avatar)
     avatar_->setBindposed(false);
 }*/
 
-void Scene::updateAvatarAnimationSim(int frame)
+void Scene::updateAvatarAnimationSim(const Animation* anim, int frame)
 {
-    if (synthetic_animation_) {	
-	avatar_->updateAnimation(*synthetic_animation_, frame * RemixerWidget::getSimInterval()); //2014.3.25
-	avatar_->skinning(); //2014.3.25
-	//avatar_->skinningtest(); //2014.3.25
-	//avatar_->skinningtest2(); //2014.3.25
+	avatar_->setBindposed(false);
+    if (anim) 
+    {	
+        avatar_->updateAnimation(anim, frame * AnimationClip::SAMPLE_SLICE);
+		avatar_->skinning();
     }
-    avatar_->setBindposed(false);
+
+ //   if (synthetic_animation_) {	
+	//avatar_->updateAnimation(*synthetic_animation_, frame * RemixerWidget::getSimInterval()); //2014.3.25
+	//avatar_->skinning(); //2014.3.25
+	////avatar_->skinningtest(); //2014.3.25
+	////avatar_->skinningtest2(); //2014.3.25
+ //   }
+ //   avatar_->setBindposed(false);
 }
 
-void Scene::renderClothes() const
-{
-
-}
+//void Scene::renderClothes() const
+//{
+//
+//}
 
 void Scene::renderSkeleton() const
 {
@@ -843,12 +851,12 @@ int Scene::totalFrame()
 {
 	double length;
 	if (synthetic_animation_->ticks_per_second) {
-		length = (synthetic_animation_->duration / synthetic_animation_->ticks_per_second) * 1000; // 节拍数换算成时长
+		length = (synthetic_animation_->ticks / synthetic_animation_->ticks_per_second) * 1000; // 节拍数换算成时长
 	}
 	else {
-		length = synthetic_animation_->duration * 1000;
+		length = synthetic_animation_->ticks * 1000;
 	}
-	int total_frame = static_cast<int>(length / RemixerWidget::getSampleInterval());
+	int total_frame = static_cast<int>(length /*/ RemixerWidget::getSampleInterval()*/);
 	return total_frame;
 }
 

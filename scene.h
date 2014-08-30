@@ -47,7 +47,7 @@ public:
 
 	void updateAvatarAnimation(const Animation* anim, int frame);	// 更新avatar动画
 	//void updateAvatarAnimation(int frame);	
-	void updateAvatarAnimationSim(int frame);
+	void updateAvatarAnimationSim(const Animation* anim, int frame);
 	void restoreToBindpose();						                // 切换到绑定姿态
 
 	void renderClothes(QOpenGLShaderProgramPtr & shader) const;
