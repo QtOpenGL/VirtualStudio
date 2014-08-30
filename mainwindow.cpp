@@ -179,7 +179,7 @@ void MainWindow::createActions()
 
     design_showgrid_action_ = new QAction(QIcon(":images/showgrid.png"), tr("Show/Hide grid"), this);
     design_showgrid_action_->setCheckable(true);
-    design_showgrid_action_->setChecked(pattern_scene_->gridVisible());
+    //design_showgrid_action_->setChecked(pattern_scene_->gridVisible());
     design_showgrid_action_->setStatusTip(tr("Show/Hide the background grid"));
     design_showgrid_action_->setToolTip(tr("Show/Hide the background grid"));
 
@@ -376,8 +376,8 @@ void MainWindow::fileImportPattern()
 		QString file_name = QFileDialog::getOpenFileName(this, tr("Import Pattern"),  ".", tr("Pattern files (*.dxf)"));
 
 		if (!file_name.isEmpty()) {
-			pattern_scene_->importPattern(file_name);
-			pattern_scene_->update();
+			//pattern_scene_->importPattern(file_name);
+			//pattern_scene_->update();
 		}
 	}
 }
@@ -422,8 +422,8 @@ void MainWindow::fileImportCloth()
 
 void MainWindow::toggleGridVisible()
 {
-    pattern_scene_->setGridVisible(design_showgrid_action_->isChecked());
-    pattern_scene_->update();
+    //pattern_scene_->setGridVisible(design_showgrid_action_->isChecked());
+    //pattern_scene_->update();
 }
 
 void MainWindow::switchInteractionMode()

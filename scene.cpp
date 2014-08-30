@@ -21,10 +21,10 @@ const QVector4D Scene::ori_color_[4] = {
 /************************************************************************/
 Scene::Scene( QObject* parent ) 
     : ai_scene_( nullptr ), 
-    //camera_( new Camera ),
+    camera_( new Camera ),
     floor_(nullptr),
     synthetic_animation_( nullptr ), 
-    camera_( new Camera(this) ),
+    //camera_( new Camera(this) ),
     avatar_( nullptr ),
     display_mode_(SHADING),
     display_mode_subroutines_(DISPLAY_MODE_COUNT),
@@ -35,8 +35,7 @@ Scene::Scene( QObject* parent )
     avatar_tex_(new Texture),
     floor_tex_(new Texture),
     is_dual_quaternion_skinning_(true),
-    is_joint_label_visible_(false)
-
+    is_joint_label_visible_(false),
     cloth_loaded_(false),
     replay_(false),
     cloth_has_texture_(false),
@@ -47,7 +46,7 @@ Scene::Scene( QObject* parent )
     // Initialize the camera position and orientation
     display_mode_names_ << QStringLiteral( "shade" )
 	<< QStringLiteral( "shadeWithNoMaterial" )
-	<< QStringLiteral( "shadeWithPureColor" );
+	<< QStringLiteral( "shadeWithPureColor" )
 	<< QStringLiteral( "shadingwireframe" );
 
     interaction_mode_names_ << QStringLiteral( "rotate" )
@@ -157,10 +156,10 @@ void Scene::render()
     shading_display_shader->setUniformValue("Material.Ks", QVector3D( 0.0f, 0.0f, 0.0f ));
     shading_display_shader->setUniformValue("Material.Shininess", 5.0f);
 
-    shader->setUniformValue("GPUSkinning", false);
-    shader->setUniformValue("ViewMatrix", view_matrix);
-    shader->setUniformValue("Light2.Direction", /*view_matrix * */QVector4D(0.0f, -1.0f, 0.0f, 0.0f));
-    shader->setUniformValue("Light2.Intensity", QVector3D(1.0f, 1.0f, 1.0f));
+    shading_display_shader->setUniformValue("GPUSkinning", false);
+    shading_display_shader->setUniformValue("ViewMatrix", view_matrix);
+    shading_display_shader->setUniformValue("Light2.Direction", /*view_matrix * */QVector4D(0.0f, -1.0f, 0.0f, 0.0f));
+    shading_display_shader->setUniformValue("Light2.Intensity", QVector3D(1.0f, 1.0f, 1.0f));
 
     //renderFloor();
 
@@ -250,9 +249,9 @@ void Scene::renderForPick()
 
 	// Pass in the usual transformation matrices
 	model_matrix_.setToIdentity();
-	QMatrix4x4 view_matrix = camera_->getViewMatrix();
+	QMatrix4x4 view_matrix = camera_->/*getV*/viewMatrix();
 	QMatrix4x4 mv = view_matrix * model_matrix_;
-	QMatrix4x4 projection_matrix = camera_->getProjectionMatrix();
+	QMatrix4x4 projection_matrix = camera_->/*getP*/projectionMatrix();
 	QMatrix4x4 MVP = projection_matrix * mv;
 	shader->setUniformValue("ModelViewMatrix", mv);
 	shader->setUniformValue("ViewMatrix", view_matrix);
